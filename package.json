@@ -1,0 +1,41 @@
+{
+  "name": "test-juggler",
+  "version": "1.0.0",
+  "description": "E2E test automation framework by Devbridge",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint **/*.js",
+    "test": "jest",
+    "postinstall": "node ./post-install.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devbridge/test-juggler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://github.com/devbridge/test-juggler",
+  "dependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "async-retry": "^1.3.1",
+    "babel-jest": "^24.9.0",
+    "gently-copy": "^3.2.0",
+    "jest": "^24.9.0",
+    "jest-image-snapshot": "^2.12.0",
+    "jest-junit": "^10.0.0",
+    "jest-puppeteer": "^4.4.0",
+    "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.6.0",
+    "husky": "^4.2.1"
+  }
+}
