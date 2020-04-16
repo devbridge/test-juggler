@@ -59,7 +59,6 @@ describe("Helpers", () => {
         const iFrameSelector = "#mce_0_ifr";
         const textFrameSelector = "#tinymce p";
         await page.goto("http://the-internet.herokuapp.com/iframe");
-        await page.waitForSelector(iFrameSelector);
 
         //Act
         const frame = await helpers.getFrame(iFrameSelector);

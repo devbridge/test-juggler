@@ -29,6 +29,7 @@ export default class Helpers {
     }
 
     async getFrame(selector) {
+        await page.waitForSelector(selector);
         const elementHandle = await page.$(selector);
         return await elementHandle.contentFrame();
     }
