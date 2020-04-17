@@ -53,4 +53,18 @@ describe("Helpers", () => {
         //Assert
         await expect(progressLoader.exists()).resolves.toBeFalsy();
     });
+
+    it("should enter iFrame and get text", async () => {
+        //Arrange
+        const iFrameSelector = "#mce_0_ifr";
+        const textFrameSelector = "#tinymce p";
+        await page.goto("http://the-internet.herokuapp.com/iframe");
+
+        //Act
+        const frame = await helpers.getFrame(iFrameSelector);
+        const textContent = await frame.$eval(textFrameSelector, element => element.textContent);
+
+        //Assert
+        expect(textContent).toEqual("Your content goes here.");
+    });
 });

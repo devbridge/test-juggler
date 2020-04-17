@@ -46,7 +46,7 @@
 
 ### Intercept requests ###
 
-* Interceptor helper introduced to take some actions with requests and responces: 
+* Interceptor helper introduced to take some actions with requests and responses: 
 * interceptor.abortRequests() allows to abort all requests or requests by url fragment.
 * interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url fragment when specific action is being performed.
 * interceptor.getAllRequestsData() allows to get all requests information when specific action is being performed.
@@ -55,7 +55,7 @@
 
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes
-* The console commands responsible for paralelisation settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):
+* The console commands responsible for parallelization settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):
 
 > __-maxConcurrency=<num> (Default: 5)__
 Prevents Jest from executing more than the specified amount of tests at the same time. Only affects tests that use test.concurrent.
@@ -71,7 +71,7 @@ That should be enough to trick Jest into running your tests always in parallel. 
 * Running with __--no-cache__ it always seems to run in parallel (as long as there are at least two files anyway). ([Source](https://github.com/facebook/jest/issues/5818#issuecomment-383739607)) 
 
 ### Junit report ###
-* junit report is generated on every test run. Report can be found in junit-report/junit.xml. Path and other parapeters can be changed. More info:([Source](https://www.npmjs.com/package/jest-junit))
+* junit report is generated on every test run. Report can be found in junit-report/junit.xml. Path and other parameters can be changed. More info:([Source](https://www.npmjs.com/package/jest-junit))
 
 ### Running tests sequentially ###
 * Use --runInBand cli command if tests need to be executed serially ([Official Jest documentation](https://jestjs.io/docs/en/cli.html))

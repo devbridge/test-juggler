@@ -27,4 +27,10 @@ export default class Helpers {
             waitUntil: "networkidle0"
         });
     }
+
+    async getFrame(selector) {
+        await page.waitForSelector(selector);
+        const elementHandle = await page.$(selector);
+        return await elementHandle.contentFrame();
+    }
 }
