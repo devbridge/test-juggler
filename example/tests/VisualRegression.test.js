@@ -77,7 +77,7 @@ describe("Visual Regression", () => {
 
     it("should cover unwanted element before making screenshot comparison", async () => {
         //Arrange
-        homepage.NavigationBar.cover();
+        await homepage.NavigationBar.cover();
 
         //Act
         const screenshot = await page.screenshot();
