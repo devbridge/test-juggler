@@ -42,7 +42,10 @@
   },
   "release-it": {
     "hooks": {
-      "before:init": ["npx eslint **/*.js", "npm run test"]
+      "before:init": [
+        "npx eslint **/*.js",
+        "npm run test"
+      ]
     },
     "github": {
       "release": true
