@@ -55,7 +55,7 @@ describe("Visual Regression", () => {
 
     it("should capture screenshot of specific page element", async () => {
         //Arrange, Act
-        const screenshot = await (await feedbackpage.TopBar.SignInButton.getDomElement()).screenshot();
+        const screenshot = await (await feedbackpage.TopBar.SignInButton.wait()).screenshot();
 
         //Assert
         expect(screenshot).toMatchImageSnapshot();
@@ -77,7 +77,7 @@ describe("Visual Regression", () => {
 
     it("should cover unwanted element before making screenshot comparison", async () => {
         //Arrange
-        homepage.NavigationBar.cover();
+        await homepage.NavigationBar.cover();
 
         //Act
         const screenshot = await page.screenshot();

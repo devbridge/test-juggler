@@ -80,7 +80,7 @@ describe("Interceptor", () => {
         });
 
         //Act
-        await interceptor.abortRequestsDuringAction(addToCartButton.click());
+        await interceptor.abortRequestsDuringAction(() => { addToCartButton.click(); });
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeFalsy();

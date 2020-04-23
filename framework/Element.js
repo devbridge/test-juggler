@@ -13,49 +13,55 @@ export default class Element {
     }
 
     newChildElement(childSelector) {
+        var isXPathSlector = (selector) => selector.startsWith("//");
+        if (isXPathSlector(this.selector) != isXPathSlector(childSelector)) {
+            throw "Cannot combine different selectors types!";
+        }
         return new Element(`${this.selector} ${childSelector}`);
     }
 
     async wait(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} ...`);
-        await page.waitForSelector(this.selector, { timeout: timeout });
+        const elementHandle = await page.waitFor(this.selector, { timeout: timeout });
         if (config.captureScreenshots) {
             await helpers.takeScreenshot();
         }
+        return elementHandle;
     }
 
     async waitUntilVisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be visible...`);
-        await page.waitForSelector(this.selector, { visible: true, timeout: timeout });
+        const elementHandle = await page.waitFor(this.selector, { visible: true, timeout: timeout });
         if (config.captureScreenshots) {
             await helpers.takeScreenshot();
         }
+        return elementHandle;
     }
 
     async waitUntilInvisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be invisible...`);
-        await page.waitForSelector(this.selector, { hidden: true, timeout: timeout });
+        await page.waitFor(this.selector, { hidden: true, timeout: timeout });
         if (config.captureScreenshots) {
             await helpers.takeScreenshot();
         }
     }
 
     async click() {
-        await this.wait();
         console.log(`Clicking ${this.selector} ...`);
-        await page.click(this.selector);
+        const elementHandle = await this.wait();
+        await elementHandle.click();
     }
 
     async doubleClick() {
-        await this.wait();
         console.log(`Double clicking ${this.selector} ...`);
-        await page.click(this.selector, { clickCount: 2 });
+        const elementHandle = await this.wait();
+        await elementHandle.click({ clickCount: 2 });
     }
 
     async rightClick() {
-        await this.wait();
         console.log(`Right clicking ${this.selector} ...`);
-        await page.click(this.selector, { button: "right" });
+        const elementHandle = await this.wait();
+        await elementHandle.click({ button: "right" });
     }
 
     async exists() {
@@ -87,10 +93,8 @@ export default class Element {
     }
 
     async dragAndDrop(destination) {
-        await this.wait();
-        await destination.wait();
-        const sourceElement = await page.$(this.selector);
-        const destinationElement = await page.$(destination.selector);
+        const sourceElement = await page.waitFor(this.selector);
+        const destinationElement = await page.waitFor(destination.selector);
         const sourceBox = await sourceElement.boundingBox();
         const destinationBox = await destinationElement.boundingBox();
         console.log(`Drag and dropping ${this.selector} to ${destination.selector} ...`);
@@ -101,49 +105,43 @@ export default class Element {
     }
 
     async text() {
-        await this.wait();
         console.log(`Getting inner text of ${this.selector} ...`);
-        const text = await page.$eval(this.selector, e => e.innerText);
+        const elementHandle = await this.wait();
+        const text = await elementHandle.evaluate(element => element.innerText);
         return text;
     }
 
     async value() {
-        await this.wait();
         console.log(`Getting value of ${this.selector} ...`);
-        const value = await page.$eval(this.selector, e => e.value);
+        const elementHandle = await this.wait();
+        const value = await elementHandle.evaluate(element => element.value);
         return value;
     }
 
     async getAttributeValue(attributeName) {
-        await this.wait();
+        const elementHandle = await this.wait();
         console.log(`Getting '${attributeName}' attribute value of element ${this.selector} ...`);
-        const atributeValue = await page.$eval(this.selector, (element, attributeName) => element.getAttribute(`${attributeName}`), attributeName);
+        const atributeValue = await elementHandle.evaluate((element, attributeName) => element.getAttribute(`${attributeName}`), attributeName);
         return atributeValue;
     }
 
     async getStyleAttributeValue(name) {
-        await this.wait();
+        const elementHandle = await this.wait();
         console.log(`Getting value of style attribute '${name}' of ${this.selector} ...`);
-        const attributeValue = await page.$eval(this.selector, (element, name) => element.style[name], name);
+        const attributeValue = await elementHandle.evaluate((element, name) => element.style[name], name);
         return attributeValue;
     }
 
     async hover() {
-        await this.wait();
         console.log(`Hovering mouse on to ${this.selector} ...`);
-        await page.hover(this.selector);
-    }
-
-    async getDomElement() {
-        await this.wait();
-        console.log(`Getting DOM element ${this.selector} ...`);
-        return await page.$(this.selector);
+        const elementHandle = await this.wait();
+        await elementHandle.hover();
     }
 
     async cover() {
-        await page.evaluate((selector) => {
+        const elementHandle = await this.wait();
+        await elementHandle.evaluate((element) => {
             //Get bounding area of element we want to cover
-            const element = document.querySelector(selector);
             const rect = element.getBoundingClientRect();
             //Create a canvas element
             var canvas = document.createElement("canvas");
@@ -164,6 +162,6 @@ export default class Element {
             context.rect(rect.x, rect.y, rect.width, rect.height);
             context.fillStyle = "yellow";
             context.fill();
-        }, this.selector);
+        });
     }
 }

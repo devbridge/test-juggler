@@ -14,6 +14,18 @@ describe("Element Actions", () => {
         expect(element.selector).toMatch("some.selector");
     });
 
+    it("should get child element by XPath selector", async () => {
+        //Arrange
+        await page.goto("http://the-internet.herokuapp.com/");
+
+        //Act
+        const element = new Element("//div[@id='content']");
+        const childElement = element.newChildElement("//h1");
+
+        //Assert
+        await expect(childElement.isVisible()).resolves.toBeTruthy();
+    });
+
     it("should wait for an element", async () => {
         //Arrange
         await page.goto("http://the-internet.herokuapp.com/dynamic_loading/2");
@@ -192,10 +204,10 @@ describe("Element Actions", () => {
         const headerText = new Element(".heading");
 
         //Act
-        const headerTextDomElement = await headerText.getDomElement();
+        const headerTextDomElement = await headerText.wait();
 
         //Assert
-        await expect(page.evaluate(domElement => domElement.textContent, headerTextDomElement)).resolves.toMatch("Welcome to the-internet");
+        await expect(headerTextDomElement.evaluate(domElement => domElement.textContent)).resolves.toMatch("Welcome to the-internet");
     });
 
     it("should get element's value", async () => {
