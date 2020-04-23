@@ -50,5 +50,12 @@
     "github": {
       "release": true
     }
-  }
+  },
+  "keywords": [
+    "testing",
+    "automation",
+    "e2e",
+    "puppeteer",
+    "jest"
+  ]
 }
