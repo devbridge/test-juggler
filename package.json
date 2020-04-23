@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "test": "jest",
-    "postinstall": "node ./post-install.js"
+    "postinstall": "node ./post-install.js",
+    "release": "release-it"
   },
   "husky": {
     "hooks": {
@@ -36,6 +37,25 @@
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-plugin-jest": "^23.6.0",
-    "husky": "^4.2.1"
-  }
+    "husky": "^4.2.1",
+    "release-it": "^13.5.5"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": [
+        "npx eslint **/*.js",
+        "npm run test"
+      ]
+    },
+    "github": {
+      "release": true
+    }
+  },
+  "keywords": [
+    "testing",
+    "automation",
+    "e2e",
+    "puppeteer",
+    "jest"
+  ]
 }
