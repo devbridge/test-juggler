@@ -5,7 +5,7 @@ const config = require(process.cwd() + "/framework.config");
 var helpers = new Helpers();
 
 const defaultTimeout = config.defaultTimeout;
-const shortTimeout = 1000;
+const shortTimeout = config.shortTimeout;
 
 export default class Element {
     constructor(selector) {
