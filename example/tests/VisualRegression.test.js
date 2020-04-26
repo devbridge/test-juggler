@@ -3,13 +3,8 @@ import HomePage from "../pages/HomePage";
 import FeedbackPage from "../pages/FeedbackPage";
 
 describe("Visual Regression", () => {
-    let homepage;
-    let feedbackpage;
-
-    beforeAll(async () => {
-        homepage = new HomePage();
-        feedbackpage = new FeedbackPage();
-    });
+    let homepage = new HomePage();
+    let feedbackpage = new FeedbackPage();
 
     beforeEach(async () => {
         await homepage.visit();
