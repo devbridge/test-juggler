@@ -3,11 +3,7 @@ import { Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
 describe("Helpers", () => {
-    let helpers;
-
-    beforeAll(async () => {
-        helpers = new Helpers();
-    });
+    let helpers = new Helpers();
 
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
