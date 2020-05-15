@@ -53,6 +53,18 @@
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
 
+### Enable console logs ###
+* Console logs are available by default. 
+* Console message types: console, pageerror, response when statuses are > 399, requestfailed.
+* Console logs are not displayed if new page is initiated in test:
+```javascript
+page = await browser.newPage();
+```
+In that case console logs can be enabled using method: 
+```javascript
+helpers.enableConsoleLogs()
+```
+
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes
 * The console commands responsible for parallelization settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):
