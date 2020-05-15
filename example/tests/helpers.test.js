@@ -1,4 +1,4 @@
-/*global page:true browser*/
+/*global page:true*/
 import { Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
@@ -40,11 +40,11 @@ describe("Helpers", () => {
 
     it("should wait for navigation to be finished", async () => {
         //Arrange
-        page = await browser.newPage();
         const progressLoader = new Element("html.nprogress-busy");
+        const loadTimeout = 30000;
 
         //Act
-        await helpers.goToUrlAndLoad("https://www.jqueryscript.net/demo/jQuery-Html5-Based-Preloader-Plugin-html5loader/");
+        await helpers.goToUrlAndLoad("https://www.jqueryscript.net/demo/jQuery-Html5-Based-Preloader-Plugin-html5loader/", loadTimeout);
 
         //Assert
         await expect(progressLoader.exists()).resolves.toBeFalsy();
