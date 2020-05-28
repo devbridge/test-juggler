@@ -1,3 +1,5 @@
+![Juggler](https://user-images.githubusercontent.com/11597256/83160670-26292200-a110-11ea-93a0-7c05ef293fdf.png)
+
 # README #
 
 ### What is this repository for? ###
