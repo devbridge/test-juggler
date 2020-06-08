@@ -31,7 +31,8 @@
     "jest-image-snapshot": "^3.0.0",
     "jest-junit": "^10.0.0",
     "jest-puppeteer": "^4.0.0",
-    "puppeteer": "^3.0.0"
+    "puppeteer": "^3.0.0",
+    "teremock": "^1.0.5"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
