@@ -12,6 +12,20 @@ export default class ApiHelpers {
         } catch (error) {
             response = error.response;
         }
+        const requestInfo = {
+            method: response.config.method,
+            URL: response.config.baseURL + response.config.url,
+            headers: response.config.headers,
+            data: response.config.data
+        };
+        const responseInfo = {
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+            data: response.data
+        };
+        console.log(`Sent request:\n${JSON.stringify(requestInfo, null, 2)}`);
+        console.log(`Got response:\n${JSON.stringify(responseInfo, null, 2)}`);
         return response;
     }
 
@@ -28,5 +42,30 @@ export default class ApiHelpers {
             url: url,
             data: data
         });
+    }
+    
+    async put(url, data) {
+        return await this.request({
+            method: "put",
+            url: url,
+            data: data
+        });
+    }
+        
+    async delete(url, data) {
+        return await this.request({
+            method: "delete",
+            url: url,
+            data: data
+        });
+    }
+
+    parseXml(xmlString) {
+        const parseString = require("xml2js").parseString;
+        var jsonData;
+        parseString(xmlString, function (err, result) {
+            jsonData = result;
+        });
+        return jsonData;
     }
 }
