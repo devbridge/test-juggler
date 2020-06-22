@@ -81,13 +81,9 @@ describe("Helpers", () => {
     it("should convert XML response to JSON", async () => {
         //Arrange
         const response = await apiHelpers.get("https://www.crcind.com/csp/samples/SOAP.Demo.cls?soap_method=AddInteger&Arg1=1&Arg2=2");
-        const parseString = require("xml2js").parseString;
-        var responseJsonData;
 
         //Act
-        parseString(response.data, function (err, result) {
-            responseJsonData = result;
-        });
+        const responseJsonData = apiHelpers.parseXml(response.data);
 
         //Assert
         expect(responseJsonData["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0].AddIntegerResponse[0].AddIntegerResult[0]).toEqual("3");
