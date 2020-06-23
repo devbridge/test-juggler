@@ -10,7 +10,11 @@ export default class ApiHelpers {
         try {
             response = await this.instance(config);
         } catch (error) {
-            response = error.response;
+            if (error.response === undefined) {
+                throw(error);
+            } else {
+                response = error.response;
+            }
         }
         const requestInfo = {
             method: response.config.method,
