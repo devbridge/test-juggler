@@ -2,6 +2,8 @@ const axios = require("axios").default;
 
 export default class ApiHelpers {
     constructor(instanceConfig) {
+        const https = require("https");
+        instanceConfig.httpsAgent = new https.Agent({ rejectUnauthorized: false });
         this.instance = axios.create(instanceConfig);
     }
 
@@ -11,7 +13,7 @@ export default class ApiHelpers {
             response = await this.instance(config);
         } catch (error) {
             if (error.response === undefined) {
-                throw(error);
+                throw (error);
             } else {
                 response = error.response;
             }
@@ -47,7 +49,7 @@ export default class ApiHelpers {
             data: data
         });
     }
-    
+
     async put(url, data) {
         return await this.request({
             method: "put",
@@ -55,7 +57,7 @@ export default class ApiHelpers {
             data: data
         });
     }
-        
+
     async delete(url, data) {
         return await this.request({
             method: "delete",
