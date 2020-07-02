@@ -2,6 +2,8 @@
 import { Element } from "test-juggler";
 
 describe("Element Actions", () => {
+    const sliceToClick = new Element("[seriesName='seriesx2'] path");
+
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
     });
@@ -88,7 +90,9 @@ describe("Element Actions", () => {
         await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
         const doubleClickButton = new Element("#authentication > button");
         var alertIsShown = false;
+        var alertMessage = null;
         page.on("dialog", async dialog => {
+            alertMessage = dialog.message();
             alertIsShown = true;
             await dialog.dismiss();
         });
@@ -98,6 +102,7 @@ describe("Element Actions", () => {
 
         //Assert
         expect(alertIsShown).toBeTruthy();
+        expect(alertMessage).toEqual("You double clicked me.. Thank You..");
     });
 
     it("should right click an element", async () => {
@@ -232,6 +237,27 @@ describe("Element Actions", () => {
         //Assert
         expect(await formElement.getAttributeValue(attributeName)).toEqual("/authenticate");
     });
+
+    it.each`
+    action                                                  | selectedAttr  | pieClickedAttr    | description
+    ${async () => { sliceToClick.hover(150); }}             | ${null}       | ${null}           | ${"hover"}
+    ${async () => { sliceToClick.click(150); }}             | ${"true"}     | ${"true"}         | ${"left-click"}
+    ${async () => { sliceToClick.rightClick(null, 100); }}  | ${"true"}     | ${null}           | ${"right-click"}
+    `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
+    //Arrange
+    const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
+    await page.goto("https://apexcharts.com/samples/react/pie/simple-donut.html");
+    await page.waitForSelector(`${sliceToClick.selector}[stroke-width='2']`);
+
+    //Act
+    await action();
+
+    //Assert
+    expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
+    expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
+    expect(await toolTip.isVisible()).toBe(true);
+    expect(await toolTip.text()).toEqual("series-2: 55");
+});
 
     xit("should cover element", async () => {
         //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
