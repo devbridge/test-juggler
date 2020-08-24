@@ -60,7 +60,7 @@
 * We are using teremock - Easy to use test request mocker for puppeteer / mocha / karma
 * The documentation is located at: https://github.com/Diokuz/teremock
 * The Helper (RequestMocker) that is implemented has simplified behavior where it will record all xhr and fetch responses from backend and when replay on the subsequent runs.
-Default behavior can be overridden with custom options passed. The options allow to target speicic requests and allow to specify response body, headers, status and delay.
+Default behavior can be overridden with custom options passed. The options allow to target specific requests and allow to specify response body, headers, status and delay.
 
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes

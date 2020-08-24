@@ -1,13 +1,12 @@
 import { RequestMocker, Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
-describe("Request mocking by recording and replaying and indercetipt specific requests", () => {
+describe("Request mocking by recording and replaying specific requests", () => {
 
     let mocker = new RequestMocker();
     let helpers = new Helpers();
 
     it("Recording all requests and replaying it on the second test run google", async () => {
-
         //Arrange
         await mocker.start();
 
@@ -20,7 +19,6 @@ describe("Request mocking by recording and replaying and indercetipt specific re
     });
 
     it("Interceptor response 404 to all requests", async () => {
-
         //Arrange
         const errorTextElement = new Element("div.humane.humane-jackedup-error.humane-animate");
         const notFoundInterceptor = {
@@ -38,7 +36,6 @@ describe("Request mocking by recording and replaying and indercetipt specific re
     });
 
     it("Interceptor changing response body", async () => {
-
         //Arrange
         const errorTextElement = new Element("#json > span:nth-child(42)");
         const responseBodyChanged = {
@@ -59,9 +56,7 @@ describe("Request mocking by recording and replaying and indercetipt specific re
         expect(actualText).toMatch("\"mocked\"");
     });
 
-
     it("Interceptor delaying response by 3s (ttfb)", async () => {
-
         //Arrange
         const timeStamp = Date.now();
         const responseBodyChanged = {
