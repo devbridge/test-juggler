@@ -58,6 +58,14 @@ export default class ApiHelpers {
         });
     }
 
+    async patch(url, data) {
+        return await this.request({
+            method: "patch",
+            url: url,
+            data: data
+        });
+    }
+
     async delete(url, data) {
         return await this.request({
             method: "delete",

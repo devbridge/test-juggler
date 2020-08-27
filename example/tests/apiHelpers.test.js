@@ -39,6 +39,18 @@ describe("Helpers", () => {
         expect(response.status).toEqual(200);
     });
 
+    it("should issue PATCH request", async () => {
+        //Arrange, Act
+        const response = await apiHelpers.patch("/api/users/2",
+            {
+                "name": "morpheus",
+                "job": "zion resident"
+            });
+
+        //Assert
+        expect(response.status).toEqual(200);
+    });
+
     it("should issue DELETE request", async () => {
         //Arrange, Act
         const response = await apiHelpers.delete("/api/users/2");
