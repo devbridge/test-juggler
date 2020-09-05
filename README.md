@@ -55,6 +55,13 @@
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
 
+### Request Mocking ###
+
+* We are using teremock - Easy to use test request mocker for puppeteer / mocha / karma
+* The documentation is located at: https://github.com/Diokuz/teremock
+* The Helper (RequestMocker) that is implemented has simplified behavior where it will record all xhr and fetch responses from backend and when replay on the subsequent runs.
+Default behavior can be overridden with custom options passed. The options allow to target specific requests and allow to specify response body, headers, status and delay.
+
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes
 * The console commands responsible for parallelization settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):
