@@ -9,17 +9,29 @@ describe("Helpers", () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
     });
 
-    it("should take screenshot and save to test logs directory", async () => {
+    it("should take screenshot, save to logs folder and return filepath", async () => {
         //Arrange
         await page.goto("http://the-internet.herokuapp.com/");
-        const filename = Date.now();
-        const filepath = `./logs/Helpers/should take screenshot and save to test logs directory/${filename}.png`;
+        const fileName = Date.now();
+        const expectedFilePath = `./logs/Helpers/should take screenshot, save to logs folder and return filepath/${fileName}.png`;
 
         //Act
-        await helpers.takeScreenshot(filename);
+        const actualFilePath = await helpers.takeScreenshot(fileName);
 
         //Assert
-        expect(fs.existsSync(filepath)).toBeTruthy();
+        expect(actualFilePath).toBe(expectedFilePath);
+        expect(fs.existsSync(actualFilePath)).toBeTruthy();
+    });
+
+    it("should use date now for screenshot file name when none is provided", async () => {
+        //Arrange
+        await page.goto("http://the-internet.herokuapp.com/");
+
+        //Act
+        const actualFilePath = await helpers.takeScreenshot();
+
+        //Assert
+        expect(actualFilePath).toContain(Date.now().toString().slice(0, -6));
     });
 
     it("should retry until action have succeeded", async () => {
