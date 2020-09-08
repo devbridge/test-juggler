@@ -9,7 +9,9 @@ export default class Helpers {
             targetDir = targetDir +`/${jasmine["currentTest"].description}`;
         }
         fs.mkdirSync(targetDir, { recursive: true });
-        await page.screenshot({ path: `${targetDir}/${filename || Date.now()}.png` });
+        const screenshotPath = `${targetDir}/${filename || Date.now()}.png`;
+        await page.screenshot({ path: screenshotPath });
+        return screenshotPath;
     }
 
     async retry(fn, retries = 5, minTimeout = 500) {
