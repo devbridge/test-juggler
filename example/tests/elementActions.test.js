@@ -233,6 +233,19 @@ describe("Element Actions", () => {
         expect(await formElement.getAttributeValue(attributeName)).toEqual("/authenticate");
     });
 
+    it("should type element's text value", async () => {
+        //Arrange
+        await page.goto("http://the-internet.herokuapp.com/inputs");
+        const inputElement = new Element("input[type=number]");
+        const inputNumber = "456";
+
+        //Act
+        await inputElement.enterText(inputNumber);
+
+        //Assert
+        expect(await inputElement.value()).toEqual(inputNumber);
+    });
+
     xit("should cover element", async () => {
         //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
     });
