@@ -118,6 +118,12 @@ export default class Element {
         return value;
     }
 
+    async enterText(text) {
+        console.log(`Entering the text value for ${this.selector} ...`);
+        const elementHandle = await this.wait();
+        await elementHandle.type(text);
+    }
+
     async getAttributeValue(attributeName) {
         const elementHandle = await this.wait();
         console.log(`Getting '${attributeName}' attribute value of element ${this.selector} ...`);
