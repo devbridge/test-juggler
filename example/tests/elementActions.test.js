@@ -233,7 +233,7 @@ describe("Element Actions", () => {
         expect(await formElement.getAttributeValue(attributeName)).toEqual("/authenticate");
     });
 
-    it("should set element's text value", async () => {
+    it("should type element's text value", async () => {
         //Arrange
         await page.goto("http://the-internet.herokuapp.com/inputs");
         const inputElement = new Element("input[type=number]");
