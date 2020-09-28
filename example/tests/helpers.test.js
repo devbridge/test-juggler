@@ -3,23 +3,33 @@ import { Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
 describe("Helpers", () => {
-    let helpers = new Helpers();
-
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
     });
 
-    it("should take screenshot and save to test logs directory", async () => {
+    it("should take screenshot, save to logs folder and return filepath", async () => {
         //Arrange
         await page.goto("http://the-internet.herokuapp.com/");
-        const filename = Date.now();
-        const filepath = `./logs/Helpers/should take screenshot and save to test logs directory/${filename}.png`;
+        const fileName = Date.now();
+        const expectedFilePath = `./logs/Helpers/should take screenshot, save to logs folder and return filepath/${fileName}.png`;
 
         //Act
-        await helpers.takeScreenshot(filename);
+        const actualFilePath = await Helpers.takeScreenshot(fileName);
 
         //Assert
-        expect(fs.existsSync(filepath)).toBeTruthy();
+        expect(actualFilePath).toBe(expectedFilePath);
+        expect(fs.existsSync(actualFilePath)).toBeTruthy();
+    });
+
+    it("should use date now for screenshot file name when none is provided", async () => {
+        //Arrange
+        await page.goto("http://the-internet.herokuapp.com/");
+
+        //Act
+        const actualFilePath = await Helpers.takeScreenshot();
+
+        //Assert
+        expect(actualFilePath).toContain(Date.now().toString().slice(0, -6));
     });
 
     it("should retry until action have succeeded", async () => {
@@ -30,7 +40,7 @@ describe("Helpers", () => {
 
         //Act
         await startButton.click();
-        await helpers.retry(async () => {
+        await Helpers.retry(async () => {
             await elementToLoad.click();
         });
 
@@ -44,7 +54,7 @@ describe("Helpers", () => {
         const progressLoader = new Element("html.nprogress-busy");
 
         //Act
-        await helpers.goToUrlAndLoad("https://www.jqueryscript.net/demo/jQuery-Html5-Based-Preloader-Plugin-html5loader/");
+        await Helpers.goToUrlAndLoad("https://www.jqueryscript.net/demo/jQuery-Html5-Based-Preloader-Plugin-html5loader/");
 
         //Assert
         await expect(progressLoader.exists()).resolves.toBeFalsy();
@@ -57,7 +67,7 @@ describe("Helpers", () => {
         await page.goto("http://the-internet.herokuapp.com/iframe");
 
         //Act
-        const frame = await helpers.getFrame(iFrameSelector);
+        const frame = await Helpers.getFrame(iFrameSelector);
         const textContent = await frame.$eval(textFrameSelector, element => element.textContent);
 
         //Assert

@@ -55,6 +55,13 @@
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
 
+### API testing ###
+
+* apiHelpers class uses Axios library for issuing HTTP requests.
+* apiHelpers.request() can be used for sending arbitrary HTTP requests.
+* apiHelpers.get(), apiHelpers.post(), apiHelpers.put() and apiHelpers.delete() are shortcuts for most common request types.
+* Refer to https://github.com/axios/axios documentation for more complex scenarios.
+
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes
 * The console commands responsible for parallelization settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):

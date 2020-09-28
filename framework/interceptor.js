@@ -1,7 +1,7 @@
 /*global page*/
 const fs = require("fs");
 
-export default class Interceptor {
+class Interceptor {
     async takeScreenshot(filename) {
         const targetDir = `./logs/${jasmine["currentSuite"].fullName}/${jasmine["currentTest"].description}`;
         fs.mkdirSync(targetDir, { recursive: true });
@@ -55,3 +55,5 @@ export default class Interceptor {
         return responseAferAction;
     }
 }
+
+export default new Interceptor();

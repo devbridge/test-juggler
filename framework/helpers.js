@@ -2,14 +2,16 @@
 const fs = require("fs");
 const retry = require("async-retry");
 
-export default class Helpers {
+class Helpers {
     async takeScreenshot(filename) {
         var targetDir = `./logs/${jasmine["currentSuite"].fullName}`;
         if (typeof jasmine["currentTest"] !== "undefined") {
             targetDir = targetDir +`/${jasmine["currentTest"].description}`;
         }
         fs.mkdirSync(targetDir, { recursive: true });
-        await page.screenshot({ path: `${targetDir}/${filename || Date.now()}.png` });
+        const screenshotPath = `${targetDir}/${filename || Date.now()}.png`;
+        await page.screenshot({ path: screenshotPath });
+        return screenshotPath;
     }
 
     async retry(fn, retries = 5, minTimeout = 500) {
@@ -34,3 +36,5 @@ export default class Helpers {
         return await elementHandle.contentFrame();
     }
 }
+
+export default new Helpers();
