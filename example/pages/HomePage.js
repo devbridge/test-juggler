@@ -2,7 +2,7 @@
 import { Element } from "test-juggler";
 import TopBar from "../components/TopBar";
 
-export default class HomePage {
+class HomePage {
     constructor() {
         this.TopBar = new TopBar();
         this.NavigationBar = new Element("#nav");
@@ -33,3 +33,5 @@ export default class HomePage {
         await this.FeedBackLink.click();
     }
 }
+
+export default new HomePage();

@@ -2,7 +2,7 @@
 const fs = require("fs");
 const retry = require("async-retry");
 
-export default class Helpers {
+class Helpers {
     async takeScreenshot(filename) {
         var targetDir = `./logs/${jasmine["currentSuite"].fullName}`;
         if (typeof jasmine["currentTest"] !== "undefined") {
@@ -36,3 +36,5 @@ export default class Helpers {
         return await elementHandle.contentFrame();
     }
 }
+
+export default new Helpers();

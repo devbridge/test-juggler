@@ -3,11 +3,8 @@ import HomePage from "../pages/HomePage";
 import FeedbackPage from "../pages/FeedbackPage";
 
 describe("Visual Regression", () => {
-    let homepage = new HomePage();
-    let feedbackpage = new FeedbackPage();
-
     beforeEach(async () => {
-        await homepage.visit();
+        await HomePage.visit();
         console.log("Running test: " + jasmine["currentTest"].fullName);
     });
 
@@ -50,7 +47,7 @@ describe("Visual Regression", () => {
 
     it("should capture screenshot of specific page element", async () => {
         //Arrange, Act
-        const screenshot = await (await feedbackpage.TopBar.SignInButton.wait()).screenshot();
+        const screenshot = await (await FeedbackPage.TopBar.SignInButton.wait()).screenshot();
 
         //Assert
         expect(screenshot).toMatchImageSnapshot();
@@ -61,7 +58,7 @@ describe("Visual Regression", () => {
         await page.evaluate((selector) => {
             let signinButtonDomElement = document.querySelector(selector);
             signinButtonDomElement.innerText = "Expected Content";
-        }, feedbackpage.TopBar.SignInButton.selector);
+        }, FeedbackPage.TopBar.SignInButton.selector);
 
         //Act
         const screenshot = await page.screenshot();
@@ -72,7 +69,7 @@ describe("Visual Regression", () => {
 
     it("should cover unwanted element before making screenshot comparison", async () => {
         //Arrange
-        await homepage.NavigationBar.cover();
+        await HomePage.NavigationBar.cover();
 
         //Act
         const screenshot = await page.screenshot();
