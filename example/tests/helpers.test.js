@@ -1,4 +1,4 @@
-/*global page:true*/
+/*global page:true browser*/
 import { Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
@@ -72,5 +72,17 @@ describe("Helpers", () => {
 
         //Assert
         expect(textContent).toEqual("Your content goes here.");
+    });
+
+    it("should setup new page", async () => {
+        //Arrange
+        const config = require(process.cwd() + "/framework.config");
+        const newPage = await browser.newPage();
+        
+        //Act
+        await Helpers.pageSetup(newPage);
+
+        //Assert
+        expect(newPage._timeoutSettings.timeout()).toEqual(config.defaultTimeout);
     });
 });

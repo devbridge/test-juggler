@@ -5,9 +5,21 @@ const fs = require("fs");
 class CustomEnvironment extends PuppeteerEnvironment {
     async setup() {
         await super.setup();
-        this.global.page.setDefaultTimeout(config.defaultTimeout);
+        await this.pageSetup(this.global.page);
+    }
+
+    async teardown() {
+        if (config.useTracing) {
+            await this.global.page.tracing.stop();
+            console.log("Page tracing has stopped");
+        }
+        await super.teardown();
+    }
+
+    async pageSetup(page) {
+        page.setDefaultTimeout(config.defaultTimeout);
         const chalk = require("chalk");
-        this.global.page
+        page
             .on("console", msg => {
                 const type = msg.type().substr(0, 3).toUpperCase();
                 const colors = {
@@ -30,17 +42,9 @@ class CustomEnvironment extends PuppeteerEnvironment {
         if (config.useTracing) {
             const targetDir = "./logs/Timelines";
             fs.mkdirSync(targetDir, { recursive: true });
-            await this.global.page.tracing.start({ screenshots: true, path: `${targetDir}/${Date.now()}_trace.json` });
+            await page.tracing.start({ screenshots: true, path: `${targetDir}/${Date.now()}_trace.json` });
             console.log("Page tracing has started");
         }
-    }
-
-    async teardown() {
-        if (config.useTracing) {
-            await this.global.page.tracing.stop();
-            console.log("Page tracing has stopped");
-        }
-        await super.teardown();
     }
 }
 

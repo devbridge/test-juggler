@@ -38,28 +38,9 @@ class Helpers {
         return await elementHandle.contentFrame();
     }
 
-    async enableConsoleLogs() {
-        const chalk = require("chalk");
-        page
-            .on("console", msg => {
-                const type = msg.type().substr(0, 3).toUpperCase();
-                const colors = {
-                    LOG: text => text,
-                    ERR: chalk.red,
-                    WAR: chalk.yellow,
-                    INF: chalk.cyan
-                };
-                const color = colors[type] || chalk.blue;
-                console.log(color(`${type} ${msg.text()}`));
-            })
-            .on("pageerror", ({ message }) => console.log(chalk.red(message)))
-            .on("response", response => {
-                if (response.status() > 399)
-                {
-                    console.log(chalk.red(`${response.status()} ${response.url()}`));
-                }})
-            .on("requestfailed", request =>
-                console.log(chalk.magenta(`${request.failure().errorText} ${request.url()}`)));
+    async pageSetup(page) {
+        const environment = require(process.cwd() + "/test-environment/environment.js");
+        await environment.prototype.pageSetup(page);
     }
 }
 

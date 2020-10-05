@@ -71,7 +71,7 @@ page = await browser.newPage();
 ```
 In that case console logs can be enabled using method: 
 ```javascript
-Helpers.enableConsoleLogs()
+Helpers.pageSetup(page);
 ```
 
 ### Parallel execution ###
