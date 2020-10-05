@@ -1,3 +1,5 @@
+![Juggler](https://user-images.githubusercontent.com/11597256/83160670-26292200-a110-11ea-93a0-7c05ef293fdf.png)
+
 # README #
 
 ### What is this repository for? ###
@@ -35,13 +37,13 @@
 
 ### Retrying actions ###
 
-* helpers.retry() allows to retry any async function. 
+* Helpers.retry() allows to retry any async function. 
 * By default it uses exponential factoring, i.e. every next timeout is twice as long.
 * Use retry as last resort, when tests depends on flaky third party behaviour.
 
 ### Waiting for full page load ###
 
-* helpers.goToUrlAndLoad() waits for page to be fully loaded. 
+* Helpers.goToUrlAndLoad() waits for page to be fully loaded. 
 * It uses parameter 'waitUntil: "networkidle0"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
 
 ### Intercept requests ###
@@ -53,6 +55,13 @@
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
 
+### API testing ###
+
+* apiHelpers class uses Axios library for issuing HTTP requests.
+* apiHelpers.request() can be used for sending arbitrary HTTP requests.
+* apiHelpers.get(), apiHelpers.post(), apiHelpers.put() and apiHelpers.delete() are shortcuts for most common request types.
+* Refer to https://github.com/axios/axios documentation for more complex scenarios.
+
 ### Enable console logs ###
 * Console logs are available by default. 
 * Console message types: console, pageerror, response when statuses are > 399, requestfailed.
@@ -62,7 +71,7 @@ page = await browser.newPage();
 ```
 In that case console logs can be enabled using method: 
 ```javascript
-helpers.enableConsoleLogs()
+Helpers.enableConsoleLogs()
 ```
 
 ### Parallel execution ###

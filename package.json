@@ -1,6 +1,6 @@
 {
   "name": "test-juggler",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "E2E test automation framework by Devbridge",
   "main": "index.js",
   "scripts": {
@@ -26,12 +26,14 @@
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "async-retry": "^1.0.0",
+    "axios": "^0.19.2",
     "gently-copy": "^3.0.0",
     "jest": "^25.0.0",
     "jest-image-snapshot": "^3.0.0",
     "jest-junit": "^10.0.0",
     "jest-puppeteer": "^4.0.0",
-    "puppeteer": "^3.0.0"
+    "puppeteer": "^3.0.0",
+    "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

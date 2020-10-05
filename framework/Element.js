@@ -2,8 +2,6 @@
 import Helpers from "./helpers";
 
 const config = require(process.cwd() + "/framework.config");
-var helpers = new Helpers();
-
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
 
@@ -24,7 +22,7 @@ export default class Element {
         console.log(`Waiting for ${this.selector} ...`);
         const elementHandle = await page.waitFor(this.selector, { timeout: timeout });
         if (config.captureScreenshots) {
-            await helpers.takeScreenshot();
+            await Helpers.takeScreenshot();
         }
         return elementHandle;
     }
@@ -33,7 +31,7 @@ export default class Element {
         console.log(`Waiting for ${this.selector} to be visible...`);
         const elementHandle = await page.waitFor(this.selector, { visible: true, timeout: timeout });
         if (config.captureScreenshots) {
-            await helpers.takeScreenshot();
+            await Helpers.takeScreenshot();
         }
         return elementHandle;
     }
@@ -42,7 +40,7 @@ export default class Element {
         console.log(`Waiting for ${this.selector} to be invisible...`);
         await page.waitFor(this.selector, { hidden: true, timeout: timeout });
         if (config.captureScreenshots) {
-            await helpers.takeScreenshot();
+            await Helpers.takeScreenshot();
         }
     }
 
@@ -116,6 +114,12 @@ export default class Element {
         const elementHandle = await this.wait();
         const value = await elementHandle.evaluate(element => element.value);
         return value;
+    }
+
+    async enterText(text) {
+        console.log(`Entering the text value for ${this.selector} ...`);
+        const elementHandle = await this.wait();
+        await elementHandle.type(text);
     }
 
     async getAttributeValue(attributeName) {
