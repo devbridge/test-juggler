@@ -1,6 +1,8 @@
 /*global page*/
 const fs = require("fs");
 const retry = require("async-retry");
+const config = require(process.cwd() + "/framework.config");
+const defaultTimeout = config.defaultTimeout;
 
 class Helpers {
     async takeScreenshot(filename) {
@@ -24,9 +26,9 @@ class Helpers {
         });
     }
 
-    async goToUrlAndLoad(url) {
+    async goToUrlAndLoad(url, timeout = defaultTimeout) {
         await page.goto(url, {
-            waitUntil: "networkidle0"
+            waitUntil: "networkidle0", timeout: timeout
         });
     }
 
@@ -34,6 +36,11 @@ class Helpers {
         await page.waitForSelector(selector);
         const elementHandle = await page.$(selector);
         return await elementHandle.contentFrame();
+    }
+
+    async pageSetup(page) {
+        const environment = require(process.cwd() + "/test-environment/environment.js");
+        await environment.prototype.pageSetup(page);
     }
 }
 

@@ -11,6 +11,7 @@ describe("Interceptor", () => {
         console.log(`Running test: '${jasmine["currentTest"].fullName}'`);
         //this is workaraound to avoid 'Request is already handled!' error. Shoud be removed when https://github.com/smooth-code/jest-puppeteer/issues/308 defect is fixed.
         page = await browser.newPage();
+        await Helpers.pageSetup(page);
     });
 
     it("should block requests by any url fragment while test case running", async () => {
@@ -71,7 +72,7 @@ describe("Interceptor", () => {
     it("should block any request during action", async () => {
         //Arrange
         await Helpers.goToUrlAndLoad(DemoOpenCartSite);
-        await page.on("dialog", dialog => {
+        page.on("dialog", dialog => {
             console.log(`Alert was detected: '${dialog.message()}'`);
             dialog.dismiss();
         });

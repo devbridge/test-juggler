@@ -37,13 +37,13 @@
 
 ### Retrying actions ###
 
-* helpers.retry() allows to retry any async function. 
+* Helpers.retry() allows to retry any async function. 
 * By default it uses exponential factoring, i.e. every next timeout is twice as long.
 * Use retry as last resort, when tests depends on flaky third party behaviour.
 
 ### Waiting for full page load ###
 
-* helpers.goToUrlAndLoad() waits for page to be fully loaded. 
+* Helpers.goToUrlAndLoad() waits for page to be fully loaded. 
 * It uses parameter 'waitUntil: "networkidle0"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
 
 ### Intercept requests ###
@@ -61,6 +61,18 @@
 * apiHelpers.request() can be used for sending arbitrary HTTP requests.
 * apiHelpers.get(), apiHelpers.post(), apiHelpers.put() and apiHelpers.delete() are shortcuts for most common request types.
 * Refer to https://github.com/axios/axios documentation for more complex scenarios.
+
+### Enable console logs ###
+* Console logs are available by default. 
+* Console message types: console, pageerror, response when statuses are > 399, requestfailed.
+* Console logs are not displayed if new page is initiated in test:
+```javascript
+page = await browser.newPage();
+```
+In that case console logs can be enabled using method: 
+```javascript
+Helpers.pageSetup(page);
+```
 
 ### Parallel execution ###
 * By default Jest runs tests in parallel with a worker pool of child processes
