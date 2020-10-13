@@ -44,7 +44,9 @@ export default class Element {
         }
     }
 
-    async getCoordinates(xOffset, yOffset, elementHandle) {
+    async getCoordinates(xOffset = null, yOffset = null) {
+        const elementHandle = await this.wait();
+        await elementHandle.focus();
         const rect = await elementHandle.boundingBox();
         const x = xOffset !== null ? xOffset : rect.width / 2;
         const y = yOffset !== null ? yOffset : rect.height / 2;
@@ -52,39 +54,31 @@ export default class Element {
         const yCoordinate = rect.y + y;
         console.log(`Action on page at position x: ${xCoordinate}, y: ${yCoordinate}`);
         console.log(`Action on element rectangle at position x: ${x}, y: ${y}`);
-        return [xCoordinate, yCoordinate];
+        return { x: xCoordinate, y: yCoordinate };
     }
 
     async click(xOffset = null, yOffset = null) {
         console.log(`Clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.focus();
-        const coordinates = await this.getCoordinates(xOffset, yOffset, elementHandle);
-        await page.mouse.click(coordinates[0], coordinates[1]);
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y);
     }
 
     async doubleClick(xOffset = null, yOffset = null) {
         console.log(`Double clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.focus();
-        const coordinates = await this.getCoordinates(xOffset, yOffset, elementHandle);
-        await page.mouse.click(coordinates[0], coordinates[1], { clickCount: 2 });
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y, { clickCount: 2 });
     }
 
     async rightClick(xOffset = null, yOffset = null) {
         console.log(`Right clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.focus();
-        const coordinates = await this.getCoordinates(xOffset, yOffset, elementHandle);
-        await page.mouse.click(coordinates[0], coordinates[1], { button: "right" });
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y, { button: "right" });
     }
 
     async hover(xOffset = null, yOffset = null) {
         console.log(`Hovering mouse on to ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.focus();
-        const coordinates = await this.getCoordinates(xOffset, yOffset, elementHandle);
-        await page.mouse.move(coordinates[0], coordinates[1]);
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.move(coordinates.x, coordinates.y);
     }
 
     async exists() {

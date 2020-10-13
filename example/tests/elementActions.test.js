@@ -275,4 +275,19 @@ describe("Element Actions", () => {
     xit("should cover element", async () => {
         //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
     });
+
+    it("should get coordinates of element", async () => {
+        //Arrange
+        const expectedXCoordinate = 108; //width (200px) / 2 + left margin (8px)
+        const expectedYCoordinate = 179.875; //height (200px) / 2 + top heading (~79.88px)
+        const rectangleCanvas = new Element("#canvas");
+        await page.goto("http://www.cs.sjsu.edu/~mak/archive/CMPE280/code/canvas/rectangles.html");
+
+        //Act
+        const coordinates = await rectangleCanvas.getCoordinates();
+
+        //Assert
+        expect(coordinates.x).toEqual(expectedXCoordinate);
+        expect(coordinates.y).toEqual(expectedYCoordinate);
+    });
 });
