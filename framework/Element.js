@@ -44,22 +44,41 @@ export default class Element {
         }
     }
 
-    async click() {
+    async getCoordinates(xOffset = null, yOffset = null) {
+        const elementHandle = await this.wait();
+        await elementHandle.focus();
+        const rect = await elementHandle.boundingBox();
+        const x = xOffset !== null ? xOffset : rect.width / 2;
+        const y = yOffset !== null ? yOffset : rect.height / 2;
+        const xCoordinate = rect.x + x;
+        const yCoordinate = rect.y + y;
+        console.log(`Action on page at position x: ${xCoordinate}, y: ${yCoordinate}`);
+        console.log(`Action on element rectangle at position x: ${x}, y: ${y}`);
+        return { x: xCoordinate, y: yCoordinate };
+    }
+
+    async click(xOffset = null, yOffset = null) {
         console.log(`Clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.click();
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y);
     }
 
-    async doubleClick() {
+    async doubleClick(xOffset = null, yOffset = null) {
         console.log(`Double clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.click({ clickCount: 2 });
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y, { clickCount: 2 });
     }
 
-    async rightClick() {
+    async rightClick(xOffset = null, yOffset = null) {
         console.log(`Right clicking ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.click({ button: "right" });
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.click(coordinates.x, coordinates.y, { button: "right" });
+    }
+
+    async hover(xOffset = null, yOffset = null) {
+        console.log(`Hovering mouse on to ${this.selector} ...`);
+        const coordinates = await this.getCoordinates(xOffset, yOffset);
+        await page.mouse.move(coordinates.x, coordinates.y);
     }
 
     async exists() {
@@ -134,12 +153,6 @@ export default class Element {
         console.log(`Getting value of style attribute '${name}' of ${this.selector} ...`);
         const attributeValue = await elementHandle.evaluate((element, name) => element.style[name], name);
         return attributeValue;
-    }
-
-    async hover() {
-        console.log(`Hovering mouse on to ${this.selector} ...`);
-        const elementHandle = await this.wait();
-        await elementHandle.hover();
     }
 
     async cover() {

@@ -53,11 +53,11 @@ describe("Interceptor", () => {
         await expect(navBar.exists()).resolves.toBeFalsy();
     });
 
-    it("should block request by any url fragment during action", async () => {
+    it("should block request by any url fragment after action", async () => {
         //Arrange
         const navBar = new Element(".navbar");
         const requestUrlFragment = "topmenu";
-        await Interceptor.abortRequestsDuringAction(page.goto(DemoGuruSite), requestUrlFragment);
+        await Interceptor.abortRequestsAfterAction(page.goto(DemoGuruSite), requestUrlFragment);
 
         //Assert
         await expect(navBar.exists()).resolves.toBeFalsy();
@@ -69,19 +69,22 @@ describe("Interceptor", () => {
         await expect(navBar.exists()).resolves.toBeTruthy();
     });
 
-    it("should block any request during action", async () => {
+    it("should block any request after action", async () => {
         //Arrange
         await Helpers.goToUrlAndLoad(DemoOpenCartSite);
+        var alertMessage = null;
         page.on("dialog", dialog => {
             console.log(`Alert was detected: '${dialog.message()}'`);
+            alertMessage = dialog.message();
             dialog.dismiss();
         });
 
         //Act
-        await Interceptor.abortRequestsDuringAction(() => { addToCartButton.click(); });
+        await Interceptor.abortRequestsAfterAction(addToCartButton.click());
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeFalsy();
+        expect(alertMessage).toEqual("\nerror\nundefined");
     });
 
     it("should count all requests", async () => {
@@ -95,11 +98,11 @@ describe("Interceptor", () => {
 
     it("should detect specific response after action", async () => {
         //Arrange
-        const responsetUrlFragment = "cart/info";
+        const responseUrlFragment = "cart/info";
         await Helpers.goToUrlAndLoad(DemoOpenCartSite);
 
         //Act
-        var responseAfterAction = await Interceptor.waitForResponseAfterAction(addToCartButton.click(), responsetUrlFragment);
+        var responseAfterAction = await Interceptor.waitForResponseAfterAction(addToCartButton.click(), responseUrlFragment);
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeTruthy();

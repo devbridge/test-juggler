@@ -22,9 +22,10 @@ class Interceptor {
         return requestStopper;
     }
 
-    async abortRequestsDuringAction(action, requestUrlFragment = "") {
+    async abortRequestsAfterAction(action, requestUrlFragment = "", waitDuration = 500) {
         let requestStopper = await this.abortRequests(requestUrlFragment);
         await action;
+        await page.waitFor(waitDuration);
         page.removeListener("request", requestStopper);
         await page.setRequestInterception(false);
     }
