@@ -46,7 +46,7 @@ export default class Element {
 
     async getCoordinates(xOffset = null, yOffset = null) {
         const elementHandle = await this.wait();
-        await elementHandle.focus();
+        await elementHandle._scrollIntoViewIfNeeded();
         const rect = await elementHandle.boundingBox();
         const x = xOffset !== null ? xOffset : rect.width / 2;
         const y = yOffset !== null ? yOffset : rect.height / 2;
