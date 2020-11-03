@@ -141,6 +141,12 @@ export default class Element {
         await elementHandle.type(text);
     }
 
+    async takeScreenshot() {
+        console.log(`Taking the screenshot for ${this.selector} ...`);
+        const elementHandle = await this.wait();
+        return await elementHandle.screenshot();
+    }
+
     async getAttributeValue(attributeName) {
         const elementHandle = await this.wait();
         console.log(`Getting '${attributeName}' attribute value of element ${this.selector} ...`);
