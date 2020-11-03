@@ -77,4 +77,12 @@ describe("Visual Regression", () => {
         //Assert
         expect(screenshot).toMatchImageSnapshot();
     });
+
+    it("should take and compare element screenshot", async () => {
+        //rrange, Act
+        const screenshot = await HomePage.TopBar.takeScreenshot();
+
+        //Assert
+        expect(screenshot).toMatchImageSnapshot();
+    });
 });

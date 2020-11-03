@@ -276,19 +276,6 @@ describe("Element Actions", () => {
         //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
     });
 
-    it("should take and compare element screenshot", async () => {
-        //Arrange
-        //Arrange
-        await page.goto("http://the-internet.herokuapp.com/");
-        const headerText = new Element(".heading");
-
-        //Act
-        const screenshot = await headerText.takeScreenshot();
-
-        //Assert
-        expect(screenshot).toMatchImageSnapshot();
-    });
-
     it("should get coordinates of element", async () => {
         //Arrange
         const expectedXCoordinate = 108; //width (200px) / 2 + left margin (8px)
