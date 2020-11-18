@@ -18,6 +18,17 @@ class CustomEnvironment extends PuppeteerEnvironment {
 
     async pageSetup(page) {
         page.setDefaultTimeout(config.defaultTimeout);
+
+        if (config.useThrottle) {
+            const client = await page.target().createCDPSession();
+
+            await client.send("Network.emulateNetworkConditions", {
+                "offline": false,
+                "downloadThroughput": config.downloadThroughput,
+                "uploadThroughput": config.uploadThroughput,
+                "latency": config.latency
+            });
+        }
         
         if (config.captureBrowserConsoleLogs) {
             const chalk = require("chalk");
