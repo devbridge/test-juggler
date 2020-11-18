@@ -4,7 +4,7 @@ module.exports = {
     captureScreenshots: true,
     defaultTimeout: 10000,
     shortTimeout: 1000,
-    useThrottle: true,
+    useThrottle: false,
     downloadThroughput: 1024000,
     uploadThroughput: 1024000,
     latency: 100
