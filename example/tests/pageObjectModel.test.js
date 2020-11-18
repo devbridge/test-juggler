@@ -24,4 +24,3 @@ describe("Example", () => {
         await expect(FeedbackPage.TitleText.exists()).resolves.toBeTruthy();
     });
 });
-
