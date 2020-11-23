@@ -85,4 +85,22 @@ describe("Helpers", () => {
         //Assert
         expect(newPage._timeoutSettings.timeout()).toEqual(config.defaultTimeout);
     });
+
+    it("should generate random text without numbers", async () => {
+        //Arrange, Act
+        const text = await Helpers.generateRandomText(10, false);
+        const regex = /[^A-Za-z]/;
+
+        //Assert
+        await expect(regex.test(text)).toBeFalsy();
+    });
+
+    it("should generate random text with numbers", async () => {
+        //Arrange, Act
+        const text = await Helpers.generateRandomText(10, true);
+        const regex = /[^A-Za-z0-9]/;
+
+        //Assert
+        await expect(regex.test(text)).toBeFalsy();
+    });
 });
