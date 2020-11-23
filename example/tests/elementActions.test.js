@@ -272,6 +272,20 @@ describe("Element Actions", () => {
         expect(await inputElement.value()).toEqual(inputNumber);
     });
 
+    it("should clear element's text value", async () => {
+        //Arrange
+        await page.goto("http://the-internet.herokuapp.com/inputs");
+        const inputElement = new Element("input[type=number]");
+        const inputNumber = "456";
+        await inputElement.enterText(inputNumber);
+
+        //Act
+        await inputElement.clearText();
+
+        //Assert
+        expect(await inputElement.value()).toEqual("");
+    });
+
     xit("should cover element", async () => {
         //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
     });

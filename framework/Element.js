@@ -141,6 +141,15 @@ export default class Element {
         await elementHandle.type(text);
     }
 
+    async clearText() {
+        console.log(`Clearing the text value for ${this.selector} ...`);
+        await this.click();
+        await page.keyboard.down("Control");
+        await page.keyboard.press("A");
+        await page.keyboard.up("Control");
+        await page.keyboard.press("Backspace");
+    }
+
     async takeScreenshot() {
         console.log(`Taking the screenshot for ${this.selector} ...`);
         const elementHandle = await this.wait();
