@@ -92,7 +92,7 @@ describe("Helpers", () => {
         const regex = /[^A-Za-z]/;
 
         //Assert
-        await expect(regex.test(text)).toBeFalsy();
+        expect(regex.test(text)).toBeFalsy();
     });
 
     it("should generate random text with numbers", async () => {
@@ -101,6 +101,6 @@ describe("Helpers", () => {
         const regex = /[^A-Za-z0-9]/;
 
         //Assert
-        await expect(regex.test(text)).toBeFalsy();
+        expect(regex.test(text)).toBeFalsy();
     });
 });
