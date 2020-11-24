@@ -88,11 +88,12 @@ describe("Helpers", () => {
 
     it("should generate random text without numbers", async () => {
         //Arrange, Act
-        const text = await Helpers.generateRandomText(10, false);
+        const text = await Helpers.generateRandomText(8, false);
         const regex = /[^A-Za-z]/;
 
         //Assert
         expect(regex.test(text)).toBeFalsy();
+        expect(text.length).toEqual(8);
     });
 
     it("should generate random text with numbers", async () => {
@@ -102,5 +103,6 @@ describe("Helpers", () => {
 
         //Assert
         expect(regex.test(text)).toBeFalsy();
+        expect(text.length).toEqual(10);
     });
 });
