@@ -43,6 +43,10 @@ module.exports = {
         "space-before-blocks": [
             "error",
             "always"
-        ]
+        ],
+		"space-infix-ops": [
+		    "error", 
+			{ "int32Hint": false }
+		]
     }
 };

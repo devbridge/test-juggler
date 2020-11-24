@@ -3,6 +3,7 @@ const fs = require("fs");
 const retry = require("async-retry");
 const config = require(process.cwd() + "/framework.config");
 const defaultTimeout = config.defaultTimeout;
+const defaultCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 class Helpers {
     async takeScreenshot(filename) {
@@ -28,8 +29,7 @@ class Helpers {
 
     async goToUrlAndLoad(url, timeout = defaultTimeout) {
         await page.goto(url, {
-            waitUntil: "networkidle0",
-            timeout: timeout,
+            waitUntil: "networkidle0", timeout: timeout,
         });
     }
 
@@ -40,23 +40,19 @@ class Helpers {
     }
 
     async pageSetup(page) {
-        const environment = require(process.cwd() +
-            "/test-environment/environment.js");
+        const environment = require(process.cwd() + "/test-environment/environment.js");
         await environment.prototype.pageSetup(page);
     }
 
-    async generateRandomText(length, withNumbers) {
+    async generateRandomText(length, characters = defaultCharacters) {
         var result = "";
-        var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        if (withNumbers) {
-            characters += "0123456789";
-        }
         var charactersLength = characters.length;
         for (var i = 0; i < length; i++) {
             result += characters.charAt(
                 Math.floor(Math.random() * charactersLength)
             );
         }
+        console.log(`Generated a random text: ${result}`);
         return result;
     }
 }

@@ -86,23 +86,26 @@ describe("Helpers", () => {
         expect(newPage._timeoutSettings.timeout()).toEqual(config.defaultTimeout);
     });
 
-    it("should generate random text without numbers", async () => {
+    it("should generate random text with no characters specified", async () => {
         //Arrange, Act
-        const text = await Helpers.generateRandomText(8, false);
-        const regex = /[^A-Za-z]/;
+        const text = await Helpers.generateRandomText(10);
+        const regex = /^[A-Za-z0-9]+$/;
 
         //Assert
-        expect(regex.test(text)).toBeFalsy();
-        expect(text.length).toEqual(8);
+        expect(regex.test(text)).toBeTruthy();
+        expect(text.length).toEqual(10);
     });
 
-    it("should generate random text with numbers", async () => {
-        //Arrange, Act
-        const text = await Helpers.generateRandomText(10, true);
-        const regex = /[^A-Za-z0-9]/;
+    it("should generate random text with custom characters list", async () => {
+        //Arrange
+        const chars = "0123456789";
+        const regex = /^[0-9]+$/;
 
+        //Act
+        const text = await Helpers.generateRandomText(8, chars);
+        
         //Assert
-        expect(regex.test(text)).toBeFalsy();
-        expect(text.length).toEqual(10);
+        expect(regex.test(text)).toBeTruthy();
+        expect(text.length).toEqual(8);
     });
 });
