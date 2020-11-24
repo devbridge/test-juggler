@@ -44,9 +44,9 @@ module.exports = {
             "error",
             "always"
         ],
-		"space-infix-ops": [
-		    "error", 
-			{ "int32Hint": false }
-		]
+        "space-infix-ops": [
+            "error", 
+            { "int32Hint": false }
+        ]
     }
 };
