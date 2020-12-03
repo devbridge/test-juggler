@@ -1,4 +1,3 @@
-/*global page document window*/
 import Helpers from "./helpers";
 
 const config = require(process.cwd() + "/framework.config");

@@ -1,4 +1,3 @@
-/*global page*/
 import { Element } from "test-juggler";
 
 describe("Element Actions", () => {

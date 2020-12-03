@@ -58,7 +58,7 @@ describe("Helpers", () => {
         //Assert
         expect(response.status).toEqual(204);
     });
-    
+
     it("should issue arbitrary request", async () => {
         //Arrange, Act
         const response = await apiHelpers.request({
@@ -73,7 +73,7 @@ describe("Helpers", () => {
         //Assert
         expect(response.status).toEqual(200);
     });
-    
+
     it("should handle bad response", async () => {
         //Arrange, Act
         const response = await apiHelpers.get("/api/users/23");
@@ -103,7 +103,7 @@ describe("Helpers", () => {
 
     it("should issue request with basic auth", async () => {
         //Arrange
-        const authedApiHelpers = new ApiHelpers({ 
+        const authedApiHelpers = new ApiHelpers({
             baseURL: "https://postman-echo.com",
             auth: {
                 username: "postman",

@@ -1,4 +1,3 @@
-/*global page:true browser*/
 import { Element, Helpers, Interceptor } from "test-juggler";
 
 const DemoGuruSite = "http://demo.guru99.com/test/radio.html";

@@ -1,4 +1,3 @@
-/*global page document*/
 import HomePage from "../pages/HomePage";
 import FeedbackPage from "../pages/FeedbackPage";
 

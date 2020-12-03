@@ -1,4 +1,3 @@
-/*global page:true browser*/
 import { Element, Helpers } from "test-juggler";
 const fs = require("fs");
 
@@ -78,7 +77,7 @@ describe("Helpers", () => {
         //Arrange
         const config = require(process.cwd() + "/framework.config");
         const newPage = await browser.newPage();
-        
+
         //Act
         await Helpers.pageSetup(newPage);
 
@@ -103,7 +102,7 @@ describe("Helpers", () => {
 
         //Act
         const text = await Helpers.generateRandomText(8, chars);
-        
+
         //Assert
         expect(regex.test(text)).toBeTruthy();
         expect(text.length).toEqual(8);
