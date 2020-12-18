@@ -1,11 +1,13 @@
 /*global page document*/
 import HomePage from "../pages/HomePage";
 import FeedbackPage from "../pages/FeedbackPage";
+const { toMatchImageSnapshot } = require("jest-image-snapshot");
+expect.extend({ toMatchImageSnapshot });
 
 describe("Visual Regression", () => {
     beforeEach(async () => {
         await HomePage.visit();
-        console.log("Running test: " + jasmine["currentTest"].fullName);
+        // console.log("Running test: " + jasmine["currentTest"].fullName);
     });
 
     it("should compare browser window viewport screenshots", async () => {
@@ -16,7 +18,7 @@ describe("Visual Regression", () => {
         expect(screenshot).toMatchImageSnapshot();
     });
 
-    it("should compare full page screenshots", async () => {
+   it("should compare full page screenshots", async () => {
         //Arrange, Act
         const screenshot = await page.screenshot({ fullPage: true });
 
@@ -26,7 +28,7 @@ describe("Visual Regression", () => {
 
     it("should compare custom viewport size screenshots", async () => {
         //Arrange
-        await page.setViewport({ width: 1920, height: 1080 });
+        await page.setViewportSize({ width: 1920, height: 1080 });
 
         //Act
         const screenshot = await page.screenshot();

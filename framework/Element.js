@@ -20,7 +20,7 @@ export default class Element {
 
     async wait(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} ...`);
-        const elementHandle = await page.waitFor(this.selector, { timeout: timeout });
+        const elementHandle = await page.waitForSelector(this.selector, { timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }

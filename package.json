@@ -4,10 +4,13 @@
   "description": "E2E test automation framework by Devbridge",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint **/*.js",
+    "lint": "eslint **/*.js --fix",
     "test": "jest",
     "postinstall": "node ./post-install.js",
     "release": "release-it"
+  },
+  "jest": {
+    "preset": "jest-playwright-preset"
   },
   "husky": {
     "hooks": {
@@ -28,17 +31,18 @@
     "async-retry": "^1.0.0",
     "axios": "^0.19.2",
     "gently-copy": "^3.0.0",
-    "jest": "^25.0.0",
-    "jest-image-snapshot": "^3.0.0",
     "jest-junit": "^10.0.0",
-    "jest-puppeteer": "^4.0.0",
-    "puppeteer": "^3.0.0",
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-plugin-jest": "^23.6.0",
+    "eslint-plugin-jest-playwright": "^0.2.1",
     "husky": "^4.2.1",
+    "jest": "^25.5.4",
+    "jest-image-snapshot": "^3.1.0",
+    "jest-playwright-preset": "^1.4.2",
+    "playwright": "^1.6.2",
     "release-it": "^14.0.4"
   },
   "release-it": {
