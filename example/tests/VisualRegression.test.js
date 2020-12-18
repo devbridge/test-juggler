@@ -18,7 +18,7 @@ describe("Visual Regression", () => {
         expect(screenshot).toMatchImageSnapshot();
     });
 
-   it("should compare full page screenshots", async () => {
+    it("should compare full page screenshots", async () => {
         //Arrange, Act
         const screenshot = await page.screenshot({ fullPage: true });
 

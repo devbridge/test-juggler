@@ -2,7 +2,7 @@ module.exports = {
 
     // Describe which browsers we want to run
 
-    browsers: ['chromium', 'firefox', 'webkit'],
+    browsers: ["chromium", "firefox", "webkit"],
 
     launchOptions: {
 
@@ -16,4 +16,4 @@ module.exports = {
 
     }
 
-}
+};
