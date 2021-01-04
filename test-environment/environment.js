@@ -1,5 +1,5 @@
-const PlaywrightEnvironment = require('jest-playwright-preset/lib/PlaywrightEnvironment')
-  .default
+const PlaywrightEnvironment = require("jest-playwright-preset/lib/PlaywrightEnvironment")
+    .default;
 const config = require(process.cwd() + "/framework.config");
 const fs = require("fs");
 
