@@ -6,8 +6,6 @@
   "scripts": {
     "lint": "eslint **/*.js",
     "test": "jest",
-    "default-tests": "jest --selectProjects default-tests",
-    "serial-tests": "jest --selectProjects serial-tests",
     "postinstall": "node ./post-install.js",
     "release": "release-it"
   },
@@ -41,8 +39,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-jest": "^23.6.0",
     "husky": "^4.2.1",
-    "release-it": "^14.0.4",
-    "jest-serial-runner": "^1.1.0"
+    "release-it": "^14.0.4"
   },
   "release-it": {
     "hooks": {

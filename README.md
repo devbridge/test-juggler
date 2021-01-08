@@ -95,14 +95,73 @@ That should be enough to trick Jest into running your tests always in parallel. 
 * Use --runInBand cli command if tests need to be executed serially ([Official Jest documentation](https://jestjs.io/docs/en/cli.html))
 
 ### Run tests in different projects ###
-Framework has two Jest projects - "default-tests" and "serial-tests".
-Default tests project is looking for tests with pattern "x.test.js" and run them in parallel.
-Serial tests project is looking for tests with pattern "x.serial-test.js" and run them all sequentially.
-Settings can be found in jest.config.js file.
+There is possibility to add several Jest projects ([Official Jest documentation](https://jestjs.io/docs/en/configuration#projects-arraystring--projectconfig)). In case there is need to have E2E tests and Unit tests in one solution, or one project to run tests sequentially and another project to run tests in parallel. This can be helpful for setuping CI/CD.
 
+Example of parallel and sequential projects run:
+```jest.config.js``` example:
+```javascript
+module.exports = {
+    projects: [
+        {
+            displayName: "default-tests",
+            globalSetup: "./test-environment/setup.js",
+            globalTeardown: "./test-environment/teardown.js",
+            testEnvironment: "./test-environment/environment.js",
+            setupFilesAfterEnv: ["./test-environment/jest.setup.js"],
+            transformIgnorePatterns: ["node_modules/(?!(test-juggler)/)"],
+            verbose: true,
+            testTimeout: 60000
+        },
+        {
+            displayName: "serial-tests",
+            testMatch: ["**/?(*.)+(serial-test).[jt]s?(x)"],
+            globalSetup: "./test-environment/setup.js",
+            globalTeardown: "./test-environment/teardown.js",
+            testEnvironment: "./test-environment/environment.js",
+            setupFilesAfterEnv: ["./test-environment/jest.setup.js"],
+            transformIgnorePatterns: ["node_modules/(?!(test-juggler)/)"],
+            verbose: true,
+            testTimeout: 60000
+        }
+    ],
+    reporters: ["default", ["jest-junit", { outputDirectory: "junit-report" }]]
+};
+```
+
+Add several scripts in ```package.json``` file under "scripts":
+```javascript
+...
+"default-tests": "jest --selectProjects default-tests",
+"serial-tests": "jest --selectProjects serial-tests --runInBand",
+"all-tests": "npm run default-tests && npm run serial-tests",
+...
+```
+Then:
 * Type and run ```npm run default-tests``` to run all default tests
 * Type and run ```npm run serial-tests``` to run all serial tests
-* Type and run ```npm run test``` to run all projects in one batch
+* Type and run ```npm run all-tests``` to run all projects in one batch (serial tests will run sequentially)
+* Type and run ```npm run test``` to run all projects in one batch (all tests in parallel)
+
+__Note 1__: 
+Parallel and sequantial run can be implemented without projects. Add test files matchers in jest scripts.
+Example:
+```javascript
+...
+ "serial-tests": "jest --testRegex '.*serial-test*' --runInBand",
+ "all-tests": "npm run test && npm run serial-tests",
+...
+```
+ or
+ ```javascript
+...
+ "all-tests": "jest && jest --testRegex '.*serial-test*' --runInBand",
+...
+```
+
+__Note 2__: When running two scripts at once then latest test run overrides junit report. So user is unable to find information about first run. To resolve this problem and generate unique report after each test run add setting ```uniqueOutputName``` to jest-junit configuration in ```jest.config.js``` file:
+```javascript
+reporters: ["default", ["jest-junit", { outputDirectory: "junit-report", uniqueOutputName: "true" }]]
+```
 
 ### Junit report ###
 * junit report is generated on every test run. Report can be found in junit-report/junit.xml. Path and other parameters can be changed. More info:([Source](https://www.npmjs.com/package/jest-junit))
