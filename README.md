@@ -91,6 +91,9 @@ For environments with variable CPUs available, you can use percentage based conf
 That should be enough to trick Jest into running your tests always in parallel. ([Source](https://github.com/facebook/jest/issues/5818#issuecomment-383674946))
 * Running with __--no-cache__ it always seems to run in parallel (as long as there are at least two files anyway). ([Source](https://github.com/facebook/jest/issues/5818#issuecomment-383739607)) 
 
+### Junit report ###
+* junit report is generated on every test run. Report can be found in junit-report/junit.xml. Path and other parameters can be changed. More info:([Source](https://www.npmjs.com/package/jest-junit))
+
 ### Running tests sequentially ###
 * Use --runInBand cli command if tests need to be executed serially ([Official Jest documentation](https://jestjs.io/docs/en/cli.html))
 
@@ -162,9 +165,6 @@ __Note 2__: When running two scripts at once then latest test run overrides juni
 ```javascript
 reporters: ["default", ["jest-junit", { outputDirectory: "junit-report", uniqueOutputName: "true" }]]
 ```
-
-### Junit report ###
-* junit report is generated on every test run. Report can be found in junit-report/junit.xml. Path and other parameters can be changed. More info:([Source](https://www.npmjs.com/package/jest-junit))
 
 ### Contribution guidelines ###
 
