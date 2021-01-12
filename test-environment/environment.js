@@ -29,7 +29,7 @@ class CustomEnvironment extends PuppeteerEnvironment {
                 "latency": config.latency
             });
         }
-        
+
         if (config.captureBrowserConsoleLogs) {
             const chalk = require("chalk");
             page
@@ -53,7 +53,7 @@ class CustomEnvironment extends PuppeteerEnvironment {
                 .on("requestfailed", request =>
                     console.log(chalk.magenta(`${request.failure().errorText} ${request.url()}`)));
         }
-        
+
         if (config.useTracing) {
             const targetDir = "./logs/Timelines";
             fs.mkdirSync(targetDir, { recursive: true });

@@ -5,6 +5,9 @@ module.exports = {
     setupFilesAfterEnv: ["./test-environment/jest.setup.js"],
     transformIgnorePatterns: ["node_modules/(?!(test-juggler)/)"],
     verbose: true,
-    reporters: ["default", ["jest-junit", { outputDirectory: "junit-report" }]],
+    reporters: [
+        "default",
+        ["jest-junit", { outputDirectory: "junit-report" }]
+    ],
     testTimeout: 60000
 };

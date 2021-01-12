@@ -51,6 +51,7 @@ module.exports = {
         "space-infix-ops": [
             "error",
             { "int32Hint": false }
-        ]
+        ],
+        "no-trailing-spaces": 2
     }
 };
