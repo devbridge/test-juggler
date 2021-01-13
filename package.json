@@ -28,7 +28,7 @@
     "async-retry": "^1.0.0",
     "axios": "^0.21.1",
     "gently-copy": "^3.0.0",
-    "jest": "^25.0.0",
+    "jest": "^26.1.0",
     "jest-image-snapshot": "^3.0.0",
     "jest-junit": "^10.0.0",
     "jest-puppeteer": "^4.0.0",
