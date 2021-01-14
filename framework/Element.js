@@ -29,7 +29,7 @@ export default class Element {
 
     async waitUntilVisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be visible...`);
-        const elementHandle = await page.waitFor(this.selector, { visible: true, timeout: timeout });
+        const elementHandle = await page.waitForSelector(this.selector, { visible: true, timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -38,7 +38,7 @@ export default class Element {
 
     async waitUntilInvisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be invisible...`);
-        await page.waitFor(this.selector, { hidden: true, timeout: timeout });
+        await page.waitForSelector(this.selector, { hidden: true, timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -46,7 +46,7 @@ export default class Element {
 
     async getCoordinates(xOffset = null, yOffset = null) {
         const elementHandle = await this.wait();
-        await elementHandle._scrollIntoViewIfNeeded();
+        await elementHandle.scrollIntoViewIfNeeded();
         const rect = await elementHandle.boundingBox();
         const x = xOffset !== null ? xOffset : rect.width / 2;
         const y = yOffset !== null ? yOffset : rect.height / 2;
@@ -110,8 +110,8 @@ export default class Element {
     }
 
     async dragAndDrop(destination) {
-        const sourceElement = await page.waitFor(this.selector);
-        const destinationElement = await page.waitFor(destination.selector);
+        const sourceElement = await page.waitForSelector(this.selector);
+        const destinationElement = await page.waitForSelector(destination.selector);
         const sourceBox = await sourceElement.boundingBox();
         const destinationBox = await destinationElement.boundingBox();
         console.log(`Drag and dropping ${this.selector} to ${destination.selector} ...`);

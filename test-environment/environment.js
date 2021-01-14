@@ -1,8 +1,9 @@
-const PuppeteerEnvironment = require("jest-environment-puppeteer");
+const PlaywrightEnvironment = require("jest-playwright-preset/lib/PlaywrightEnvironment")
+    .default;
 const config = require(process.cwd() + "/framework.config");
 const fs = require("fs");
 
-class CustomEnvironment extends PuppeteerEnvironment {
+class CustomEnvironment extends PlaywrightEnvironment {
     async setup() {
         await super.setup();
         await this.pageSetup(this.global.page);
@@ -19,8 +20,8 @@ class CustomEnvironment extends PuppeteerEnvironment {
     async pageSetup(page) {
         page.setDefaultTimeout(config.defaultTimeout);
 
-        if (config.useThrottle) {
-            const client = await page.target().createCDPSession();
+        if (config.useThrottle && this.global.browserName == "chromium") {
+            const client = await page.context().newCDPSession(page);
 
             await client.send("Network.emulateNetworkConditions", {
                 "offline": false,
