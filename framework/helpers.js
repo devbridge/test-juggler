@@ -1,4 +1,3 @@
-/*global page*/
 const fs = require("fs");
 const retry = require("async-retry");
 const config = require(process.cwd() + "/framework.config");
