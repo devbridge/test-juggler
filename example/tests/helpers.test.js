@@ -82,7 +82,7 @@ describe("Helpers", () => {
         await Helpers.pageSetup(newPage);
 
         //Assert
-        expect(newPage._timeoutSettings.timeout()).toEqual(config.defaultTimeout);
+        expect(newPage._timeoutSettings.timeout({})).toEqual(config.defaultTimeout);
     });
 
     it("should generate random text with no characters specified", async () => {
