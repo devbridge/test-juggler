@@ -191,12 +191,12 @@ describe("Element Actions", () => {
 
     it("should hover on an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/tooltip.html");
-        const downloadButton = new Element("#download_now");
-        const tooltip = new Element("div.tooltip");
+        await page.goto("https://demoqa.com/tool-tips" );
+        const button = new Element("#toolTipButton");
+        const tooltip = new Element("#buttonToolTip");
 
         //Act
-        await downloadButton.hover();
+        await button.hover();
 
         //Assert
         await expect(tooltip.isVisible()).resolves.toBeTruthy();
