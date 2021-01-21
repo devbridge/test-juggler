@@ -44,7 +44,7 @@
 ### Waiting for full page load ###
 
 * Helpers.goToUrlAndLoad() waits for page to be fully loaded. 
-* It uses parameter 'waitUntil: "networkidle0"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
+* It uses parameter 'waitUntil: "networkidle"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
 
 ### Intercept requests ###
 

@@ -28,7 +28,7 @@ class Helpers {
 
     async goToUrlAndLoad(url, timeout = defaultTimeout) {
         await page.goto(url, {
-            waitUntil: "networkidle0", timeout: timeout,
+            waitUntil: "networkidle", timeout: timeout,
         });
     }
 
