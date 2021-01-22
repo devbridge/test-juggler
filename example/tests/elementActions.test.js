@@ -252,10 +252,11 @@ describe("Element Actions", () => {
     await action();
 
     //Assert
-    expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
-    expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
     expect(await toolTip.isVisible()).toBe(true);
     expect(await toolTip.text()).toEqual("series-2: 55");
+    expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
+    expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
+
 });
 
     it("should type element's text value", async () => {
@@ -291,10 +292,10 @@ describe("Element Actions", () => {
 
     it("should get coordinates of element", async () => {
         //Arrange
-        const expectedXCoordinate = 108; //width (200px) / 2 + left margin (8px)
-        const expectedYCoordinate = 179.875; //height (200px) / 2 + top heading (~79.88px)
-        const rectangleCanvas = new Element("#canvas");
-        await page.goto("http://www.cs.sjsu.edu/~mak/archive/CMPE280/code/canvas/rectangles.html");
+        const expectedXCoordinate = 640; //width: default viewport 1280px / 2
+        const expectedYCoordinate = 34; //height: top container 68px / 2
+        const rectangleCanvas = new Element(".w3-container.top");
+        await page.goto("https://www.w3schools.com/");
 
         //Act
         const coordinates = await rectangleCanvas.getCoordinates();

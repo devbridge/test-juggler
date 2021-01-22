@@ -7,26 +7,18 @@ class Interceptor {
         await page.screenshot({ path: `${targetDir}/${filename || Date.now()}.png` });
     }
 
-    async abortRequests(requestUrlFragment = "") {
-        const requestStopper = request => {
-            if (request.url().indexOf(requestUrlFragment) > -1) {
-                request.abort();
-                console.log(`Aborted request Url: '${request.url()}'`);
-            }
-            else
-                request.continue();
-        };
-        await page.setRequestInterception(true);
-        page.on("request", requestStopper);
-        return requestStopper;
+    async abortRequests(requestUrlFragment = "**") {
+        await page.route(requestUrlFragment, route => {
+            route.abort();
+            console.log(`Aborted request Url: '${route.request().url()}'`);
+        } );
     }
 
     async abortRequestsAfterAction(action, requestUrlFragment = "", waitDuration = 500) {
-        let requestStopper = await this.abortRequests(requestUrlFragment);
+        await this.abortRequests(requestUrlFragment);
         await action;
-        await page.waitFor(waitDuration);
-        page.removeListener("request", requestStopper);
-        await page.setRequestInterception(false);
+        await page.waitForTimeout(waitDuration);
+        await page.unroute(requestUrlFragment);
     }
 
     async getAllRequestsData(action) {
