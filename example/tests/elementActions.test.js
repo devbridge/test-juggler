@@ -304,4 +304,36 @@ describe("Element Actions", () => {
         expect(coordinates.x).toEqual(expectedXCoordinate);
         expect(coordinates.y).toEqual(expectedYCoordinate);
     });
+
+    it("should upload a file when an absolute path is provided", async () => {
+        //Arrange
+        const filePath = process.cwd() + "\\testFiles\\Dummy.txt";
+        const remotePath = "C:\\fakepath\\Dummy.txt";
+        const uploadElement = new Element("#uploadFile");
+        const resultElement = new Element("#uploadedFilePath");
+        await page.goto("https://demoqa.com/upload-download");
+
+        //Act
+        await uploadElement.uploadFile(filePath, true);
+
+        //Assert
+        expect(await resultElement.text()).toEqual(remotePath);
+    });
+
+    it("should upload a file when a relative path is provided", async () => {
+        //Arrange
+        const filePath = "\\testFiles\\Dummy.txt";
+        const remotePath = "C:\\fakepath\\Dummy.txt";
+        const uploadElement = new Element("#uploadFile");
+        const resultElement = new Element("#uploadedFilePath");
+        await page.goto("https://demoqa.com/upload-download");
+
+        //Act
+        await uploadElement.uploadFile(filePath, false);
+
+        //Assert
+        expect(await resultElement.text()).toEqual(remotePath);
+    });
+
+
 });

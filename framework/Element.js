@@ -195,4 +195,11 @@ export default class Element {
             context.fill();
         });
     }
+
+    async uploadFile(filePath, isAbsolutePath) {
+        if (!isAbsolutePath) filePath = process.cwd() + filePath;
+        console.log(`Uploading a file with path ${filePath}`);
+        const elementHandle = await this.wait();
+        await elementHandle.setInputFiles(filePath);
+    }
 }
