@@ -1,4 +1,3 @@
-/*global page*/
 const fs = require("fs");
 
 class Interceptor {

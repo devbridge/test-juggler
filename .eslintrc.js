@@ -9,7 +9,11 @@ module.exports = {
     "extends": "eslint:recommended",
     "globals": {
         "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
+        "SharedArrayBuffer": "readonly",
+        "document": "readonly",
+        "page": true,
+        "browser": "readonly",
+        "window": "readonly"
     },
     "parserOptions": {
         "ecmaVersion": 2018,
@@ -45,8 +49,9 @@ module.exports = {
             "always"
         ],
         "space-infix-ops": [
-            "error", 
+            "error",
             { "int32Hint": false }
-        ]
+        ],
+        "no-trailing-spaces": 2
     }
 };

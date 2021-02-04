@@ -1,4 +1,3 @@
-/*global page document window*/
 import Helpers from "./helpers";
 
 const config = require(process.cwd() + "/framework.config");
@@ -29,7 +28,7 @@ export default class Element {
 
     async waitUntilVisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be visible...`);
-        const elementHandle = await page.waitForSelector(this.selector, { visible: true, timeout: timeout });
+        const elementHandle = await page.waitForSelector(this.selector, { state: "visible", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -38,7 +37,7 @@ export default class Element {
 
     async waitUntilInvisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be invisible...`);
-        await page.waitForSelector(this.selector, { hidden: true, timeout: timeout });
+        await page.waitForSelector(this.selector, { state: "hidden", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
