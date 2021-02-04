@@ -16,7 +16,7 @@ describe("Interceptor", () => {
     it("should block requests by any url fragment while test case running", async () => {
         //Arrange
         const navBar = new Element(".navbar");
-        const requestUrlFragment = "topmenu";
+        const requestUrlFragment = "**/topmenu.*";
 
         await Interceptor.abortRequests(requestUrlFragment);
 
@@ -27,7 +27,7 @@ describe("Interceptor", () => {
         await expect(navBar.exists()).resolves.toBeFalsy();
 
         //Act
-        await page.reload( { waitUntil: "networkidle2" } );
+        await page.reload();
 
         //Assert
         await expect(navBar.exists()).resolves.toBeFalsy();
@@ -36,7 +36,7 @@ describe("Interceptor", () => {
     it("should block requests by any url fragment after abort method is used", async () => {
         //Arrange
         const navBar = new Element(".navbar");
-        const requestUrlFragment = "topmenu";
+        const requestUrlFragment = "**/topmenu.*";
 
         //Act
         await page.goto(DemoGuruSite);
@@ -46,7 +46,7 @@ describe("Interceptor", () => {
 
         //Act
         await Interceptor.abortRequests(requestUrlFragment);
-        await page.reload( { waitUntil: "networkidle2" } );
+        await page.reload();
 
         //Assert
         await expect(navBar.exists()).resolves.toBeFalsy();
@@ -55,14 +55,14 @@ describe("Interceptor", () => {
     it("should block request by any url fragment after action", async () => {
         //Arrange
         const navBar = new Element(".navbar");
-        const requestUrlFragment = "topmenu";
+        const requestUrlFragment = "**/topmenu.*";
         await Interceptor.abortRequestsAfterAction(page.goto(DemoGuruSite), requestUrlFragment);
 
         //Assert
         await expect(navBar.exists()).resolves.toBeFalsy();
 
         //Act
-        await page.reload( { waitUntil: "networkidle2" } );
+        await page.reload();
 
         //Assert
         await expect(navBar.exists()).resolves.toBeTruthy();
@@ -70,7 +70,7 @@ describe("Interceptor", () => {
 
     it("should block any request after action", async () => {
         //Arrange
-        await Helpers.goToUrlAndLoad(DemoOpenCartSite);
+        await page.goto(DemoOpenCartSite);
         var alertMessage = null;
         page.on("dialog", dialog => {
             console.log(`Alert was detected: '${dialog.message()}'`);
@@ -107,7 +107,7 @@ describe("Interceptor", () => {
         await expect(successMessage.isVisible()).resolves.toBeTruthy();
         expect(responseAfterAction).toBeTruthy();
         console.log(`Request Url after action: '${responseAfterAction.url()}'`);
-        console.log(`Request Body: '${await responseAfterAction.text()}'`);
+        console.log(`Response Body: '${await responseAfterAction.text()}'`);
     });
 
     it("should detect any request after action", async () => {
@@ -121,6 +121,5 @@ describe("Interceptor", () => {
         await expect(successMessage.isVisible()).resolves.toBeTruthy();
         expect(requestAfterAction).toBeTruthy();
         console.log(`Request Url after action: '${requestAfterAction.url()}'`);
-        console.log(`Request Body: '${await requestAfterAction.response().text()}'`);
     });
 });

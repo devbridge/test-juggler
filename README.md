@@ -49,8 +49,8 @@
 ### Intercept requests ###
 
 * Interceptor helper introduced to take some actions with requests and responses: 
-* interceptor.abortRequests() allows to abort all requests or requests by url fragment.
-* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url fragment when specific action is being performed.
+* interceptor.abortRequests() allows to abort all requests or requests by url glob pattern, regex pattern (More inforamtion  in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
+* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url glob pattern, regex pattern  when specific action is being performed (More inforamtion about url matching in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
 * interceptor.getAllRequestsData() allows to get all requests information when specific action is being performed.
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
