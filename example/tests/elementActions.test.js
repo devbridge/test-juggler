@@ -312,7 +312,7 @@ describe("Element Actions", () => {
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
         await page.goto("https://demoqa.com/upload-download");
-        
+
         //Act
         await uploadElement.uploadFile(filePath, true);
 
@@ -327,7 +327,7 @@ describe("Element Actions", () => {
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
         await page.goto("https://demoqa.com/upload-download");
-        
+
         //Act
         await uploadElement.uploadFile(filePath, false);
 
@@ -335,5 +335,5 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
-    
+
 });
