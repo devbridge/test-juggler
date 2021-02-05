@@ -1,10 +1,17 @@
 import { Element } from "test-juggler";
+const fs = require("fs");
+const fsExtra = require("fs-extra");
 
 describe("Element Actions", () => {
     const sliceToClick = new Element("[seriesName='seriesx2'] path");
 
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
+    });
+
+    afterAll(async () => {
+        const tempFileDir = process.cwd() + "\\example\\testFiles\\temp";
+        await fsExtra.emptyDir(tempFileDir);
     });
 
     it("should get element selector", async () => {
@@ -335,5 +342,17 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
+    it("should download a file when an absolute path is provided", async () => {
+        //Arrange
+        const filePath = process.cwd() + "\\example\\testFiles\\testUpload.json";
+        const resultFilePath = process.cwd() + "\\example\\testFiles\\temp\\testUpload_compare.json";
+        const downloadElement = new Element("//a[text()='testUpload.json']");
+        await page.goto("http://the-internet.herokuapp.com/download");
 
+        //Act
+        await downloadElement.downloadFile(resultFilePath, true);
+
+        //Assert
+        expect(fs.readFileSync(filePath)).toEqual(fs.readFileSync(resultFilePath));
+    });
 });

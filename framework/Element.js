@@ -202,4 +202,11 @@ export default class Element {
         const elementHandle = await this.wait();
         await elementHandle.setInputFiles(filePath);
     }
+
+    async downloadFile(filePath, isAbsolutePath) {
+        if (!isAbsolutePath) filePath = process.cwd() + filePath;
+        await this.click();
+        const download = await page.waitForEvent("download");
+        await download.saveAs(filePath);
+    }
 }
