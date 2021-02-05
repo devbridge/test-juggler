@@ -356,7 +356,7 @@ describe("Element Actions", () => {
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
 
-     it("should download a file when an relative path is provided", async () => {
+    it("should download a file when an relative path is provided", async () => {
         //Arrange
         const filePath = process.cwd() + "\\example\\testFiles\\testUpload.json";
         const resultFilePath = "\\example\\testFiles\\temp\\testUpload_compare.json";
