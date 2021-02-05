@@ -86,35 +86,30 @@ describe("Element Actions", () => {
 
     it("should double click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const doubleClickButton = new Element("#authentication > button");
-        var alertIsShown = false;
-        var alertMessage = null;
-        page.on("dialog", async dialog => {
-            alertMessage = dialog.message();
-            alertIsShown = true;
-            await dialog.dismiss();
-        });
+        await page.goto("https://demoqa.com/buttons");
+        const doubleClickButton = new Element("#doubleClickBtn");
+        const doubleClickMessage = new Element("#doubleClickMessage");
 
         //Act
         await doubleClickButton.doubleClick();
 
         //Assert
-        expect(alertIsShown).toBeTruthy();
-        expect(alertMessage).toEqual("You double clicked me.. Thank You..");
+        await expect(doubleClickMessage.exists()).resolves.toBeTruthy();
+        expect(await doubleClickMessage.text()).toEqual("You have done a double click");
     });
 
     it("should right click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const rightClickButton = new Element("span.context-menu-one");
-        const contextMenu = new Element("#context-menu-layer");
+        await page.goto("https://demoqa.com/buttons");
+        const rightClickButton = new Element("#rightClickBtn");
+        const rightClickMessage = new Element("#rightClickMessage");
 
         //Act
         await rightClickButton.rightClick();
 
         //Assert
-        await expect(contextMenu.exists()).resolves.toBeTruthy();
+        await expect(rightClickMessage.exists()).resolves.toBeTruthy();
+        expect(await rightClickMessage.text()).toEqual("You have done a right click");
     });
 
     it("should check if element exist", async () => {
@@ -253,7 +248,7 @@ describe("Element Actions", () => {
 
     //Assert
     expect(await toolTip.isVisible()).toBe(true);
-    expect(await toolTip.text()).toEqual("series-2: 55");
+    expect(await toolTip.text()).toContain("series-2: 55");
     expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
     expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
 
@@ -293,9 +288,9 @@ describe("Element Actions", () => {
     it("should get coordinates of element", async () => {
         //Arrange
         const expectedXCoordinate = 640; //width: default viewport 1280px / 2
-        const expectedYCoordinate = 34; //height: top container 68px / 2
-        const rectangleCanvas = new Element(".w3-container.top");
-        await page.goto("https://www.w3schools.com/");
+        const expectedYCoordinate = 25; //height: top bar 50px / 2
+        const rectangleCanvas = new Element(".top-bar__network._fixed");
+        await page.goto("https://stackoverflow.com/users/login");
 
         //Act
         const coordinates = await rectangleCanvas.getCoordinates();
