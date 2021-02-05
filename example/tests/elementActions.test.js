@@ -1,5 +1,5 @@
 import { Element } from "test-juggler";
-const fs = require("fs");
+const fs = require("fs").promises;
 const fsExtra = require("fs-extra");
 
 describe("Element Actions", () => {
@@ -353,6 +353,20 @@ describe("Element Actions", () => {
         await downloadElement.downloadFile(resultFilePath, true);
 
         //Assert
-        expect(fs.readFileSync(filePath)).toEqual(fs.readFileSync(resultFilePath));
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
+    });
+
+     it("should download a file when an relative path is provided", async () => {
+        //Arrange
+        const filePath = process.cwd() + "\\example\\testFiles\\testUpload.json";
+        const resultFilePath = "\\example\\testFiles\\temp\\testUpload_compare.json";
+        const downloadElement = new Element("//a[text()='testUpload.json']");
+        await page.goto("http://the-internet.herokuapp.com/download");
+
+        //Act
+        await downloadElement.downloadFile(resultFilePath, true);
+
+        //Assert
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
 });
