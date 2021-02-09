@@ -1,7 +1,5 @@
 const fs = require("fs");
 const retry = require("async-retry");
-const config = require(process.cwd() + "/framework.config");
-const defaultTimeout = config.defaultTimeout;
 const defaultCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 class Helpers {
@@ -23,12 +21,6 @@ class Helpers {
             minTimeout: minTimeout,
             maxTimeout: Infinity,
             randomize: false,
-        });
-    }
-
-    async goToUrlAndLoad(url, timeout = defaultTimeout) {
-        await page.goto(url, {
-            waitUntil: "networkidle", timeout: timeout,
         });
     }
 
