@@ -293,7 +293,7 @@ describe("Element Actions", () => {
         await page.goto("https://stackoverflow.com/users/login");
 
         //Act
-        const coordinates = await rectangleCanvas.getElementClickCoordinates();
+        const coordinates = await rectangleCanvas.getCoordinates();
 
         //Assert
         expect(coordinates.x).toEqual(expectedXCoordinate);

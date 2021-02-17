@@ -43,7 +43,7 @@ export default class Element {
         }
     }
 
-    async getElementClickCoordinates(xOffset = null, yOffset = null) {
+    async getCoordinates(xOffset = null, yOffset = null) {
         const elementHandle = await this.wait();
         const rect = await elementHandle.boundingBox();
         const xCoordinate = xOffset !== null ? xOffset : rect.width / 2;
@@ -56,7 +56,7 @@ export default class Element {
     async click(xOffset = null, yOffset = null) {
         console.log(`Clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
-            const coordinates = await this.getElementClickCoordinates(xOffset, yOffset);
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
             await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
         else await page.click(this.selector);
@@ -65,7 +65,7 @@ export default class Element {
     async doubleClick(xOffset = null, yOffset = null) {
         console.log(`Double clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
-            const coordinates = await this.getElementClickCoordinates(xOffset, yOffset);
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
             await page.dblclick(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
         else await page.dblclick(this.selector);
@@ -74,7 +74,7 @@ export default class Element {
     async rightClick(xOffset = null, yOffset = null) {
         console.log(`Right clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
-            const coordinates = await this.getElementClickCoordinates(xOffset, yOffset);
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
             await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y }, button: "right" } );
         }
         else await page.click(this.selector, { button: "right" });
@@ -83,7 +83,7 @@ export default class Element {
     async hover(xOffset = null, yOffset = null) {
         console.log(`Hovering mouse on to ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
-            const coordinates = await this.getElementClickCoordinates(xOffset, yOffset);
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
             await page.hover(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
         else await page.hover(this.selector);
