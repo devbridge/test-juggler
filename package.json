@@ -45,7 +45,7 @@
     "jest": "^25.5.4",
     "jest-image-snapshot": "^3.1.0",
     "jest-playwright-preset": "^1.4.2",
-    "playwright": "^1.6.2",
+    "playwright": "^1.8.0",
     "release-it": "^14.0.4"
   },
   "release-it": {

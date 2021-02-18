@@ -4,6 +4,7 @@ const fsExtra = require("fs-extra");
 
 describe("Element Actions", () => {
     const sliceToClick = new Element("[seriesName='seriesx2'] path");
+    const localPath = process.cwd().replace(/\\/g, "/");
 
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
@@ -93,35 +94,30 @@ describe("Element Actions", () => {
 
     it("should double click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const doubleClickButton = new Element("#authentication > button");
-        var alertIsShown = false;
-        var alertMessage = null;
-        page.on("dialog", async dialog => {
-            alertMessage = dialog.message();
-            alertIsShown = true;
-            await dialog.dismiss();
-        });
+        await page.goto("https://demoqa.com/buttons");
+        const doubleClickButton = new Element("#doubleClickBtn");
+        const doubleClickMessage = new Element("#doubleClickMessage");
 
         //Act
         await doubleClickButton.doubleClick();
 
         //Assert
-        expect(alertIsShown).toBeTruthy();
-        expect(alertMessage).toEqual("You double clicked me.. Thank You..");
+        await expect(doubleClickMessage.exists()).resolves.toBeTruthy();
+        expect(await doubleClickMessage.text()).toEqual("You have done a double click");
     });
 
     it("should right click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const rightClickButton = new Element("span.context-menu-one");
-        const contextMenu = new Element("#context-menu-layer");
+        await page.goto("https://demoqa.com/buttons");
+        const rightClickButton = new Element("#rightClickBtn");
+        const rightClickMessage = new Element("#rightClickMessage");
 
         //Act
         await rightClickButton.rightClick();
 
         //Assert
-        await expect(contextMenu.exists()).resolves.toBeTruthy();
+        await expect(rightClickMessage.exists()).resolves.toBeTruthy();
+        expect(await rightClickMessage.text()).toEqual("You have done a right click");
     });
 
     it("should check if element exist", async () => {
@@ -249,6 +245,7 @@ describe("Element Actions", () => {
     ${async () => { sliceToClick.hover(150); }}             | ${null}       | ${null}           | ${"hover"}
     ${async () => { sliceToClick.click(150); }}             | ${"true"}     | ${"true"}         | ${"left-click"}
     ${async () => { sliceToClick.rightClick(null, 100); }}  | ${"true"}     | ${null}           | ${"right-click"}
+  
     `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
     //Arrange
     const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
@@ -260,7 +257,7 @@ describe("Element Actions", () => {
 
     //Assert
     expect(await toolTip.isVisible()).toBe(true);
-    expect(await toolTip.text()).toEqual("series-2: 55");
+    expect(await toolTip.text()).toContain("series-2: 55");
     expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
     expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
 
@@ -300,9 +297,9 @@ describe("Element Actions", () => {
     it("should get coordinates of element", async () => {
         //Arrange
         const expectedXCoordinate = 640; //width: default viewport 1280px / 2
-        const expectedYCoordinate = 34; //height: top container 68px / 2
-        const rectangleCanvas = new Element(".w3-container.top");
-        await page.goto("https://www.w3schools.com/");
+        const expectedYCoordinate = 25; //height: top bar 50px / 2
+        const rectangleCanvas = new Element(".top-bar__network._fixed");
+        await page.goto("https://stackoverflow.com/users/login");
 
         //Act
         const coordinates = await rectangleCanvas.getCoordinates();
@@ -344,10 +341,10 @@ describe("Element Actions", () => {
 
     it("should download a file when an absolute path is provided", async () => {
         //Arrange
-        const filePath = process.cwd() + "\\example\\testFiles\\testUpload.json";
-        const resultFilePath = process.cwd() + "\\example\\testFiles\\temp\\testUpload_compare.json";
-        const downloadElement = new Element("//a[text()='testUpload.json']");
-        await page.goto("http://the-internet.herokuapp.com/download");
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = localPath + "/example/testFiles/temp/example.zip";
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
 
         //Act
         await downloadElement.downloadFile(resultFilePath, true);
@@ -358,13 +355,13 @@ describe("Element Actions", () => {
 
     it("should download a file when an relative path is provided", async () => {
         //Arrange
-        const filePath = process.cwd() + "\\example\\testFiles\\testUpload.json";
-        const resultFilePath = "\\example\\testFiles\\temp\\testUpload_compare.json";
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = "/example/testFiles/temp/example.zip";
         const downloadElement = new Element("//a[text()='testUpload.json']");
         await page.goto("http://the-internet.herokuapp.com/download");
 
         //Act
-        await downloadElement.downloadFile(resultFilePath, true);
+        await downloadElement.downloadFile(resultFilePath, false);
 
         //Assert
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
