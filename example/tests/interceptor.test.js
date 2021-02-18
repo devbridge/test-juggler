@@ -1,4 +1,4 @@
-import { Element, Helpers, Interceptor } from "test-juggler";
+import { Element, Interceptor } from "test-juggler";
 
 const DemoQaSite = "https://demoqa.com/books";
 const DemoOpenCartSite = "https://demo.opencart.com/";
@@ -95,7 +95,7 @@ describe("Interceptor", () => {
 
     it("should count all requests", async () => {
         //Act
-        var totalRequests = await Interceptor.getAllRequestsData(Helpers.goToUrlAndLoad(DemoOpenCartSite));
+        var totalRequests = await Interceptor.getAllRequestsData(page.goto(DemoOpenCartSite));
 
         //Assert
         expect(totalRequests.length > 0).toBeTruthy();
@@ -105,7 +105,7 @@ describe("Interceptor", () => {
     it("should detect specific response after action", async () => {
         //Arrange
         const responseUrlFragment = "cart/info";
-        await Helpers.goToUrlAndLoad(DemoOpenCartSite);
+        await page.goto(DemoOpenCartSite);
 
         //Act
         var responseAfterAction = await Interceptor.waitForResponseAfterAction(addToCartButton.click(), responseUrlFragment);
@@ -119,7 +119,7 @@ describe("Interceptor", () => {
 
     it("should detect any request after action", async () => {
         //Arrange
-        await Helpers.goToUrlAndLoad(DemoOpenCartSite);
+        await page.goto(DemoOpenCartSite);
 
         //Act
         var requestAfterAction = await Interceptor.waitForRequestAfterAction(addToCartButton.click());

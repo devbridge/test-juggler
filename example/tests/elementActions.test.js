@@ -235,8 +235,8 @@ describe("Element Actions", () => {
     it.each`
     action                                                  | selectedAttr  | pieClickedAttr    | description
     ${async () => { sliceToClick.hover(150); }}             | ${null}       | ${null}           | ${"hover"}
-    ${async () => { sliceToClick.click(150); }}             | ${"true"}     | ${"true"}         | ${"left-click"}
-    ${async () => { sliceToClick.rightClick(null, 100); }}  | ${"true"}     | ${null}           | ${"right-click"}
+    ${async () => { sliceToClick.click(null, 85); }}        | ${"true"}     | ${"true"}         | ${"left-click"}
+    ${async () => { sliceToClick.rightClick(100, 90); }}    | ${"true"}     | ${null}           | ${"right-click"}
     `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
     //Arrange
     const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
