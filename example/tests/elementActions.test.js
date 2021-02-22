@@ -243,9 +243,8 @@ describe("Element Actions", () => {
     it.each`
     action                                                  | selectedAttr  | pieClickedAttr    | description
     ${async () => { sliceToClick.hover(150); }}             | ${null}       | ${null}           | ${"hover"}
-    ${async () => { sliceToClick.click(150); }}             | ${"true"}     | ${"true"}         | ${"left-click"}
-    ${async () => { sliceToClick.rightClick(null, 100); }}  | ${"true"}     | ${null}           | ${"right-click"}
-  
+    ${async () => { sliceToClick.click(null, 85); }}        | ${"true"}     | ${"true"}         | ${"left-click"}
+    ${async () => { sliceToClick.rightClick(100, 90); }}    | ${"true"}     | ${null}           | ${"right-click"}
     `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
     //Arrange
     const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
@@ -311,7 +310,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when an absolute path is provided", async () => {
         //Arrange
-        const filePath = process.cwd() + "\\testFiles\\Dummy.txt";
+        const filePath = process.cwd() + "\\example\\testFiles\\Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -326,7 +325,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when a relative path is provided", async () => {
         //Arrange
-        const filePath = "\\testFiles\\Dummy.txt";
+        const filePath = "\\example\\testFiles\\Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -339,7 +338,8 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
-    it("should download a file when an absolute path is provided", async () => {
+    //Skipping the Webkit for download tests until the issue is resolved https://github.com/microsoft/playwright/issues/5396
+    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an absolute path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
         const resultFilePath = localPath + "/example/testFiles/temp/example.zip";
@@ -353,17 +353,17 @@ describe("Element Actions", () => {
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
 
-    it("should download a file when an relative path is provided", async () => {
+    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an relative path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
         const resultFilePath = "/example/testFiles/temp/example.zip";
-        const downloadElement = new Element("//a[text()='testUpload.json']");
-        await page.goto("http://the-internet.herokuapp.com/download");
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
 
         //Act
         await downloadElement.downloadFile(resultFilePath, false);
 
         //Assert
-        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(process.cwd() + resultFilePath));
     });
 });

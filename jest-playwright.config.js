@@ -2,7 +2,7 @@ module.exports = {
 
     // Describe which browsers we want to run
 
-    browsers: ["chromium", "webkit"],
+    browsers: ["chromium", "webkit", "firefox"],
     exitOnPageError: false,
     launchOptions: {
 
