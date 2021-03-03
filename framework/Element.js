@@ -1,5 +1,6 @@
 import Helpers from "./helpers";
 
+const path = require('path');
 const config = require(process.cwd() + "/framework.config");
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
@@ -212,8 +213,8 @@ export default class Element {
         await elementHandle.setInputFiles(filePath);
     }
 
-    async downloadFile(filePath, isAbsolutePath) {
-        if (!isAbsolutePath) filePath = process.cwd() + filePath;
+    async downloadFile(filePath) {
+        if (!path.isAbsolute(filePath)) filePath = process.cwd().replace(/\\/g, "/") + filePath;
         const [download] = await Promise.all([
             page.waitForEvent("download"),
             this.click(),

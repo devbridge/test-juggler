@@ -11,7 +11,7 @@ describe("Element Actions", () => {
     });
 
     afterAll(async () => {
-        const tempFileDir = process.cwd() + "\\example\\testFiles\\temp";
+        const tempFileDir = process.cwd() + "/example/testFiles/temp";
         await fsExtra.emptyDir(tempFileDir);
     });
 
@@ -310,7 +310,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when an absolute path is provided", async () => {
         //Arrange
-        const filePath = process.cwd() + "\\example\\testFiles\\Dummy.txt";
+        const filePath = process.cwd() + "/example/testFiles/Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -325,7 +325,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when a relative path is provided", async () => {
         //Arrange
-        const filePath = "\\example\\testFiles\\Dummy.txt";
+        const filePath = "/example/testFiles/Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -338,7 +338,7 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
-    //Skipping the Webkit for download tests until the issue is resolved https://github.com/microsoft/playwright/issues/5396
+    //TODO: un-skip when the local web server is implemented for the test pages
     it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an absolute path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
@@ -347,12 +347,13 @@ describe("Element Actions", () => {
         await page.goto(`file:///${localPath}/example/examplePages/download.html`);
 
         //Act
-        await downloadElement.downloadFile(resultFilePath, true);
+        await downloadElement.downloadFile(resultFilePath);
 
         //Assert
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
-
+    
+    //TODO: un-skip when the local web server is implemented for the test pages
     it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an relative path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
@@ -361,9 +362,9 @@ describe("Element Actions", () => {
         await page.goto(`file:///${localPath}/example/examplePages/download.html`);
 
         //Act
-        await downloadElement.downloadFile(resultFilePath, false);
+        await downloadElement.downloadFile(resultFilePath);
 
         //Assert
-        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(process.cwd() + resultFilePath));
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(localPath + resultFilePath));
     });
 });
