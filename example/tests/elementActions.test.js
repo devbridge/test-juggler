@@ -1,10 +1,18 @@
 import { Element } from "test-juggler";
+const fs = require("fs").promises;
+const fsExtra = require("fs-extra");
 
 describe("Element Actions", () => {
     const sliceToClick = new Element("[seriesName='seriesx2'] path");
+    const localPath = process.cwd().replace(/\\/g, "/");
 
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
+    });
+
+    afterAll(async () => {
+        const tempFileDir = process.cwd() + "/example/testFiles/temp";
+        await fsExtra.emptyDir(tempFileDir);
     });
 
     it("should get element selector", async () => {
@@ -302,7 +310,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when an absolute path is provided", async () => {
         //Arrange
-        const filePath = process.cwd() + "\\testFiles\\Dummy.txt";
+        const filePath = process.cwd() + "/example/testFiles/Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -317,7 +325,7 @@ describe("Element Actions", () => {
 
     it("should upload a file when a relative path is provided", async () => {
         //Arrange
-        const filePath = "\\testFiles\\Dummy.txt";
+        const filePath = "/example/testFiles/Dummy.txt";
         const remotePath = "C:\\fakepath\\Dummy.txt";
         const uploadElement = new Element("#uploadFile");
         const resultElement = new Element("#uploadedFilePath");
@@ -330,5 +338,33 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
+    //TODO: un-skip when the local web server is implemented for the test pages
+    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an absolute path is provided", async () => {
+        //Arrange
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = localPath + "/example/testFiles/temp/example.zip";
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
 
+        //Act
+        await downloadElement.downloadFile(resultFilePath);
+
+        //Assert
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
+    });
+
+    //TODO: un-skip when the local web server is implemented for the test pages
+    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an relative path is provided", async () => {
+        //Arrange
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = "/example/testFiles/temp/example.zip";
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
+
+        //Act
+        await downloadElement.downloadFile(resultFilePath);
+
+        //Assert
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(localPath + resultFilePath));
+    });
 });

@@ -9,7 +9,10 @@ module.exports = {
         headless: true,
 
         // If we want to have opened devtools from start
-        devtools: false
+        devtools: false,
+    },
+    contextOptions:
+    {
+        acceptDownloads: true
     }
-
 };
