@@ -1,6 +1,6 @@
 import Helpers from "./helpers";
 
-const path = require('path');
+const path = require("path");
 const config = require(process.cwd() + "/framework.config");
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;

@@ -352,7 +352,7 @@ describe("Element Actions", () => {
         //Assert
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
-    
+
     //TODO: un-skip when the local web server is implemented for the test pages
     it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an relative path is provided", async () => {
         //Arrange
