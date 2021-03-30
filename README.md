@@ -16,7 +16,7 @@
 
 ### Default Timeout ###
 
-* Default time in milliseconds for Puppeteer to wait for an element can be set in framework.config i.e. defaultTimeout: 10000
+* Default time in milliseconds for Playwright to wait for an element can be set in framework.config i.e. defaultTimeout: 10000
 
 ### Performance Tracing ###
 

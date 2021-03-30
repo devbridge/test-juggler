@@ -6,7 +6,7 @@ expect.extend({ toMatchImageSnapshot });
 describe("Visual Regression", () => {
     beforeEach(async () => {
         await HomePage.visit();
-        // console.log("Running test: " + jasmine["currentTest"].fullName);
+        console.log("Running test: " + jasmine["currentTest"].fullName);
     });
 
     it("should compare browser window viewport screenshots", async () => {

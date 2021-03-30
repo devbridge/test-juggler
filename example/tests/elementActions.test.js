@@ -290,7 +290,7 @@ describe("Element Actions", () => {
     });
 
     xit("should cover element", async () => {
-        //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
+        //TODO: Test should be added and unxit`ed when #23 is implemented.
     });
 
     it("should get coordinates of element", async () => {
@@ -338,8 +338,7 @@ describe("Element Actions", () => {
         expect(await resultElement.text()).toEqual(remotePath);
     });
 
-    //TODO: un-skip when the local web server is implemented for the test pages
-    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an absolute path is provided", async () => {
+    it("should download a file when an absolute path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
         const resultFilePath = localPath + "/example/testFiles/temp/example.zip";
@@ -353,8 +352,7 @@ describe("Element Actions", () => {
         expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
     });
 
-    //TODO: un-skip when the local web server is implemented for the test pages
-    it.jestPlaywrightSkip({ browsers: ["webkit"] }, "should download a file when an relative path is provided", async () => {
+    it("should download a file when an relative path is provided", async () => {
         //Arrange
         const filePath = localPath + "/example/examplePages/files/example.zip";
         const resultFilePath = "/example/testFiles/temp/example.zip";

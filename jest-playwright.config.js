@@ -2,7 +2,7 @@ module.exports = {
 
     // Describe which browsers we want to run
 
-    browsers: ["chromium", "firefox", "webkit"],
+    browsers: ["chromium"],
     exitOnPageError: false,
     launchOptions: {
         // If we want to run browsers in headless mode or not,
