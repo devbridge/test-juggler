@@ -16,7 +16,7 @@
 
 ### Default Timeout ###
 
-* Default time in milliseconds for Puppeteer to wait for an element can be set in framework.config i.e. defaultTimeout: 10000
+* Default time in milliseconds for Playwright to wait for an element can be set in framework.config i.e. defaultTimeout: 10000
 
 ### Performance Tracing ###
 
@@ -44,13 +44,13 @@
 ### Waiting for full page load ###
 
 * Helpers.goToUrlAndLoad() waits for page to be fully loaded. 
-* It uses parameter 'waitUntil: "networkidle0"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
+* It uses parameter 'waitUntil: "networkidle"' to consider navigation to be finished when there are no more than 0 network connections for at least 500 ms.
 
 ### Intercept requests ###
 
 * Interceptor helper introduced to take some actions with requests and responses: 
-* interceptor.abortRequests() allows to abort all requests or requests by url fragment.
-* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url fragment when specific action is being performed.
+* interceptor.abortRequests() allows to abort all requests or requests by url glob pattern, regex pattern (More inforamtion  in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
+* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url glob pattern, regex pattern  when specific action is being performed (More inforamtion about url matching in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
 * interceptor.getAllRequestsData() allows to get all requests information when specific action is being performed.
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.

@@ -1,5 +1,6 @@
 import Helpers from "./helpers";
 
+const path = require("path");
 const config = require(process.cwd() + "/framework.config");
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
@@ -19,7 +20,7 @@ export default class Element {
 
     async wait(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} ...`);
-        const elementHandle = await page.waitFor(this.selector, { timeout: timeout });
+        const elementHandle = await page.waitForSelector(this.selector, { timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -28,7 +29,7 @@ export default class Element {
 
     async waitUntilVisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be visible...`);
-        const elementHandle = await page.waitFor(this.selector, { visible: true, timeout: timeout });
+        const elementHandle = await page.waitForSelector(this.selector, { state: "visible", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -37,7 +38,7 @@ export default class Element {
 
     async waitUntilInvisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be invisible...`);
-        await page.waitFor(this.selector, { hidden: true, timeout: timeout });
+        await page.waitForSelector(this.selector, { state: "hidden", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -45,39 +46,48 @@ export default class Element {
 
     async getCoordinates(xOffset = null, yOffset = null) {
         const elementHandle = await this.wait();
-        await elementHandle._scrollIntoViewIfNeeded();
         const rect = await elementHandle.boundingBox();
-        const x = xOffset !== null ? xOffset : rect.width / 2;
-        const y = yOffset !== null ? yOffset : rect.height / 2;
-        const xCoordinate = rect.x + x;
-        const yCoordinate = rect.y + y;
-        console.log(`Action on page at position x: ${xCoordinate}, y: ${yCoordinate}`);
-        console.log(`Action on element rectangle at position x: ${x}, y: ${y}`);
-        return { x: xCoordinate, y: yCoordinate };
+        const xCoordinate = xOffset !== null ? xOffset : rect.width / 2;
+        const yCoordinate = yOffset !== null ? yOffset : rect.height / 2;
+        console.log(`Element width: ${rect.width}, height: ${rect.height}`);
+        console.log(`Action on element rectangle at position x: ${xCoordinate}, y: ${yCoordinate}`);
+        return  { x: xCoordinate, y: yCoordinate };
     }
 
     async click(xOffset = null, yOffset = null) {
         console.log(`Clicking ${this.selector} ...`);
-        const coordinates = await this.getCoordinates(xOffset, yOffset);
-        await page.mouse.click(coordinates.x, coordinates.y);
+        if (xOffset != null || yOffset != null) {
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
+            await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+        }
+        else await page.click(this.selector);
     }
 
     async doubleClick(xOffset = null, yOffset = null) {
         console.log(`Double clicking ${this.selector} ...`);
-        const coordinates = await this.getCoordinates(xOffset, yOffset);
-        await page.mouse.click(coordinates.x, coordinates.y, { clickCount: 2 });
+        if (xOffset != null || yOffset != null) {
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
+            await page.dblclick(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+        }
+        else await page.dblclick(this.selector);
     }
 
     async rightClick(xOffset = null, yOffset = null) {
         console.log(`Right clicking ${this.selector} ...`);
-        const coordinates = await this.getCoordinates(xOffset, yOffset);
-        await page.mouse.click(coordinates.x, coordinates.y, { button: "right" });
+        if (xOffset != null || yOffset != null) {
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
+            await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y }, button: "right" } );
+        }
+        else await page.click(this.selector, { button: "right" });
     }
 
     async hover(xOffset = null, yOffset = null) {
         console.log(`Hovering mouse on to ${this.selector} ...`);
-        const coordinates = await this.getCoordinates(xOffset, yOffset);
-        await page.mouse.move(coordinates.x, coordinates.y);
+        if (xOffset != null || yOffset != null) {
+            const coordinates = await this.getCoordinates(xOffset, yOffset);
+            await page.hover(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+        }
+        else await page.hover(this.selector);
     }
 
     async exists() {
@@ -109,8 +119,8 @@ export default class Element {
     }
 
     async dragAndDrop(destination) {
-        const sourceElement = await page.waitFor(this.selector);
-        const destinationElement = await page.waitFor(destination.selector);
+        const sourceElement = await page.waitForSelector(this.selector);
+        const destinationElement = await page.waitForSelector(destination.selector);
         const sourceBox = await sourceElement.boundingBox();
         const destinationBox = await destinationElement.boundingBox();
         console.log(`Drag and dropping ${this.selector} to ${destination.selector} ...`);
@@ -194,5 +204,21 @@ export default class Element {
             context.fillStyle = "yellow";
             context.fill();
         });
+    }
+
+    async uploadFile(filePath, isAbsolutePath) {
+        if (!isAbsolutePath) filePath = process.cwd() + filePath;
+        console.log(`Uploading a file with path ${filePath}`);
+        const elementHandle = await this.wait();
+        await elementHandle.setInputFiles(filePath);
+    }
+
+    async downloadFile(filePath) {
+        if (!path.isAbsolute(filePath)) filePath = process.cwd().replace(/\\/g, "/") + filePath;
+        const [download] = await Promise.all([
+            page.waitForEvent("download"),
+            this.click(),
+        ]);
+        await download.saveAs(filePath);
     }
 }

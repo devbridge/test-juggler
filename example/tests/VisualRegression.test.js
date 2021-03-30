@@ -1,5 +1,7 @@
 import HomePage from "../pages/HomePage";
 import FeedbackPage from "../pages/FeedbackPage";
+const { toMatchImageSnapshot } = require("jest-image-snapshot");
+expect.extend({ toMatchImageSnapshot });
 
 describe("Visual Regression", () => {
     beforeEach(async () => {
@@ -25,7 +27,7 @@ describe("Visual Regression", () => {
 
     it("should compare custom viewport size screenshots", async () => {
         //Arrange
-        await page.setViewport({ width: 1920, height: 1080 });
+        await page.setViewportSize({ width: 1920, height: 1080 });
 
         //Act
         const screenshot = await page.screenshot();

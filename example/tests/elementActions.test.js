@@ -1,10 +1,18 @@
 import { Element } from "test-juggler";
+const fs = require("fs").promises;
+const fsExtra = require("fs-extra");
 
 describe("Element Actions", () => {
     const sliceToClick = new Element("[seriesName='seriesx2'] path");
+    const localPath = process.cwd().replace(/\\/g, "/");
 
     beforeEach(async () => {
         console.log("Running test: " + jasmine["currentTest"].fullName);
+    });
+
+    afterAll(async () => {
+        const tempFileDir = process.cwd() + "/example/testFiles/temp";
+        await fsExtra.emptyDir(tempFileDir);
     });
 
     it("should get element selector", async () => {
@@ -86,35 +94,30 @@ describe("Element Actions", () => {
 
     it("should double click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const doubleClickButton = new Element("#authentication > button");
-        var alertIsShown = false;
-        var alertMessage = null;
-        page.on("dialog", async dialog => {
-            alertMessage = dialog.message();
-            alertIsShown = true;
-            await dialog.dismiss();
-        });
+        await page.goto("https://demoqa.com/buttons");
+        const doubleClickButton = new Element("#doubleClickBtn");
+        const doubleClickMessage = new Element("#doubleClickMessage");
 
         //Act
         await doubleClickButton.doubleClick();
 
         //Assert
-        expect(alertIsShown).toBeTruthy();
-        expect(alertMessage).toEqual("You double clicked me.. Thank You..");
+        await expect(doubleClickMessage.exists()).resolves.toBeTruthy();
+        expect(await doubleClickMessage.text()).toEqual("You have done a double click");
     });
 
     it("should right click an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/simple_context_menu.html");
-        const rightClickButton = new Element("span.context-menu-one");
-        const contextMenu = new Element("#context-menu-layer");
+        await page.goto("https://demoqa.com/buttons");
+        const rightClickButton = new Element("#rightClickBtn");
+        const rightClickMessage = new Element("#rightClickMessage");
 
         //Act
         await rightClickButton.rightClick();
 
         //Assert
-        await expect(contextMenu.exists()).resolves.toBeTruthy();
+        await expect(rightClickMessage.exists()).resolves.toBeTruthy();
+        expect(await rightClickMessage.text()).toEqual("You have done a right click");
     });
 
     it("should check if element exist", async () => {
@@ -191,12 +194,12 @@ describe("Element Actions", () => {
 
     it("should hover on an element", async () => {
         //Arrange
-        await page.goto("http://demo.guru99.com/test/tooltip.html");
-        const downloadButton = new Element("#download_now");
-        const tooltip = new Element("div.tooltip");
+        await page.goto("https://demoqa.com/tool-tips" );
+        const button = new Element("#toolTipButton");
+        const tooltip = new Element("#buttonToolTip");
 
         //Act
-        await downloadButton.hover();
+        await button.hover();
 
         //Assert
         await expect(tooltip.isVisible()).resolves.toBeTruthy();
@@ -240,8 +243,8 @@ describe("Element Actions", () => {
     it.each`
     action                                                  | selectedAttr  | pieClickedAttr    | description
     ${async () => { sliceToClick.hover(150); }}             | ${null}       | ${null}           | ${"hover"}
-    ${async () => { sliceToClick.click(150); }}             | ${"true"}     | ${"true"}         | ${"left-click"}
-    ${async () => { sliceToClick.rightClick(null, 100); }}  | ${"true"}     | ${null}           | ${"right-click"}
+    ${async () => { sliceToClick.click(null, 85); }}        | ${"true"}     | ${"true"}         | ${"left-click"}
+    ${async () => { sliceToClick.rightClick(100, 90); }}    | ${"true"}     | ${null}           | ${"right-click"}
     `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
     //Arrange
     const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
@@ -252,10 +255,11 @@ describe("Element Actions", () => {
     await action();
 
     //Assert
+    expect(await toolTip.isVisible()).toBe(true);
+    expect(await toolTip.text()).toContain("series-2: 55");
     expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
     expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
-    expect(await toolTip.isVisible()).toBe(true);
-    expect(await toolTip.text()).toEqual("series-2: 55");
+
 });
 
     it("should type element's text value", async () => {
@@ -286,15 +290,15 @@ describe("Element Actions", () => {
     });
 
     xit("should cover element", async () => {
-        //TODO: Test should be added and unxit`ed when DTAF-78 is implemented.
+        //TODO: Test should be added and unxit`ed when #23 is implemented.
     });
 
     it("should get coordinates of element", async () => {
         //Arrange
-        const expectedXCoordinate = 108; //width (200px) / 2 + left margin (8px)
-        const expectedYCoordinate = 179.875; //height (200px) / 2 + top heading (~79.88px)
-        const rectangleCanvas = new Element("#canvas");
-        await page.goto("http://www.cs.sjsu.edu/~mak/archive/CMPE280/code/canvas/rectangles.html");
+        const expectedXCoordinate = 640; //width: default viewport 1280px / 2
+        const expectedYCoordinate = 25; //height: top bar 50px / 2
+        const rectangleCanvas = new Element(".top-bar__network._fixed");
+        await page.goto("https://stackoverflow.com/users/login");
 
         //Act
         const coordinates = await rectangleCanvas.getCoordinates();
@@ -302,5 +306,63 @@ describe("Element Actions", () => {
         //Assert
         expect(coordinates.x).toEqual(expectedXCoordinate);
         expect(coordinates.y).toEqual(expectedYCoordinate);
+    });
+
+    it("should upload a file when an absolute path is provided", async () => {
+        //Arrange
+        const filePath = process.cwd() + "/example/testFiles/Dummy.txt";
+        const remotePath = "C:\\fakepath\\Dummy.txt";
+        const uploadElement = new Element("#uploadFile");
+        const resultElement = new Element("#uploadedFilePath");
+        await page.goto("https://demoqa.com/upload-download");
+
+        //Act
+        await uploadElement.uploadFile(filePath, true);
+
+        //Assert
+        expect(await resultElement.text()).toEqual(remotePath);
+    });
+
+    it("should upload a file when a relative path is provided", async () => {
+        //Arrange
+        const filePath = "/example/testFiles/Dummy.txt";
+        const remotePath = "C:\\fakepath\\Dummy.txt";
+        const uploadElement = new Element("#uploadFile");
+        const resultElement = new Element("#uploadedFilePath");
+        await page.goto("https://demoqa.com/upload-download");
+
+        //Act
+        await uploadElement.uploadFile(filePath, false);
+
+        //Assert
+        expect(await resultElement.text()).toEqual(remotePath);
+    });
+
+    it("should download a file when an absolute path is provided", async () => {
+        //Arrange
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = localPath + "/example/testFiles/temp/example.zip";
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
+
+        //Act
+        await downloadElement.downloadFile(resultFilePath);
+
+        //Assert
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(resultFilePath));
+    });
+
+    it("should download a file when an relative path is provided", async () => {
+        //Arrange
+        const filePath = localPath + "/example/examplePages/files/example.zip";
+        const resultFilePath = "/example/testFiles/temp/example.zip";
+        const downloadElement = new Element("#downloadLink");
+        await page.goto(`file:///${localPath}/example/examplePages/download.html`);
+
+        //Act
+        await downloadElement.downloadFile(resultFilePath);
+
+        //Assert
+        expect(await fs.readFile(filePath)).toEqual(await fs.readFile(localPath + resultFilePath));
     });
 });
