@@ -247,20 +247,19 @@ describe("Element Actions", () => {
     ${async () => { sliceToClick.rightClick(100, 90); }}    | ${"true"}     | ${null}           | ${"right-click"}
     `("should $description element with offset", async ({ action, selectedAttr, pieClickedAttr }) => {
     //Arrange
-    const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
-    await page.goto("https://apexcharts.com/samples/react/pie/simple-donut.html");
-    await page.waitForSelector(`${sliceToClick.selector}[stroke-width='2']`);
+        const toolTip = new Element(".apexcharts-tooltip.apexcharts-active");
+        await page.goto("https://apexcharts.com/samples/react/pie/simple-donut.html");
+        await page.waitForSelector(`${sliceToClick.selector}[stroke-width='2']`);
 
-    //Act
-    await action();
+        //Act
+        await action();
 
-    //Assert
-    expect(await toolTip.isVisible()).toBe(true);
-    expect(await toolTip.text()).toContain("series-2: 55");
-    expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
-    expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
-
-});
+        //Assert
+        expect(await toolTip.isVisible()).toBe(true);
+        expect(await toolTip.text()).toContain("series-2: 55");
+        expect(await sliceToClick.getAttributeValue("selected")).toEqual(selectedAttr);
+        expect(await sliceToClick.getAttributeValue("data:pieClicked")).toEqual(pieClickedAttr);
+    });
 
     it("should type element's text value", async () => {
         //Arrange
