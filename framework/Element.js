@@ -1,7 +1,7 @@
 import Helpers from "./helpers";
 
 const path = require("path");
-const config = require(process.cwd() + "/framework.config");
+const config = require(process.cwd() + "/test-juggler.config");
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
 

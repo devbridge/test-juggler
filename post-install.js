@@ -8,7 +8,7 @@
 
 var gentlyCopy = require("gently-copy");
 
-var filesToCopy = ["test-environment", "babel.config.js", "framework.config.js", "jest-playwright.config.js", "jest.config.js", "jsconfig.json"];
+var filesToCopy = ["test-environment", "babel.config.js", "test-juggler.config.js", "jest-playwright.config.js", "jest.config.js", "jsconfig.json"];
 
 if (process.env.DO_NOT_INSTALL_EXAMPLES !== "true") {
     filesToCopy.push("example");
