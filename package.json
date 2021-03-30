@@ -1,6 +1,6 @@
 {
   "name": "test-juggler",
-  "version": "2.2.1",
+  "version": "3.0.1",
   "description": "E2E test automation framework by Devbridge",
   "main": "index.js",
   "scripts": {
