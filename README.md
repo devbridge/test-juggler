@@ -16,17 +16,17 @@
 
 ### Default Timeout ###
 
-* Default time in milliseconds for Playwright to wait for an element can be set in framework.config i.e. defaultTimeout: 10000
+* Default time in milliseconds for Playwright to wait for an element can be set in test-juggler.config i.e. defaultTimeout: 10000
 
 ### Performance Tracing ###
 
-* To enable Chrome performance tracing set useTracing to true in framework.config
+* To enable Chrome performance tracing set useTracing to true in test-juggler.config
 * Chromium does not support tracing of different tabs in parallel, so this option will only work when tests are run in serial mode
 * Use "jest --runInBand" as your "test" command to run tests serially
 
 ### Screenshot Capturing ###
 
-* Set captureScreenshots: true in framework.config to enable capturing screenshots on every action.
+* Set captureScreenshots: true in test-juggler.config to enable capturing screenshots on every action.
 * Note that screen capture does not work well with headful browser mode.
 * There might be some performance degradation when using screenshots capturing.
 

@@ -63,7 +63,7 @@ describe("Helpers", () => {
 
     it("should setup new page", async () => {
         //Arrange
-        const config = require(process.cwd() + "/framework.config");
+        const config = require(process.cwd() + "/test-juggler.config");
         const newPage = await browser.newPage();
 
         //Act

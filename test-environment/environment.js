@@ -1,6 +1,6 @@
 const PlaywrightEnvironment = require("jest-playwright-preset/lib/PlaywrightEnvironment")
     .default;
-const config = require(process.cwd() + "/framework.config");
+const config = require(process.cwd() + "/test-juggler.config");
 const fs = require("fs");
 
 class CustomEnvironment extends PlaywrightEnvironment {
