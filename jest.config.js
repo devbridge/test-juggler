@@ -1,6 +1,4 @@
 module.exports = {
-    //globalSetup: "./test-environment/setup.js",
-    //globalTeardown: "./test-environment/teardown.js",
     testEnvironment: "./test-environment/environment.js",
     preset: "jest-playwright-preset",
     setupFilesAfterEnv: ["./test-environment/jest.setup.js"],
