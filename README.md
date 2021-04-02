@@ -9,10 +9,10 @@
 
 ### How do I get set up? ###
 
-1. Go to existing node project where you want to install test-juggler. In case of having tests in seperate project, go to empty folder and run "npm init --yes", to create new project.
+1. Go to existing node project where you want to install test-juggler. In case of having tests in separate project, go to empty folder and run "npm init --yes", to create new project.
 2. Run "npm install test-juggler"
 3. Run "npx jest" to run example tests.
-4. For installing framework without copying examples (i.e. for continious integration), set environment varaible "DO_NOT_INSTALL_EXAMPLES = true" before installing.
+4. For installing framework without copying examples (i.e. for continuous integration), set environment variable "DO_NOT_INSTALL_EXAMPLES = true" before installing.
 
 ### Default Timeout ###
 
@@ -39,7 +39,7 @@
 
 * Helpers.retry() allows to retry any async function. 
 * By default it uses exponential factoring, i.e. every next timeout is twice as long.
-* Use retry as last resort, when tests depends on flaky third party behaviour.
+* Use retry as last resort, when tests depend on flaky third party behaviour.
 
 ### Waiting for full page load ###
 
@@ -49,8 +49,8 @@
 ### Intercept requests ###
 
 * Interceptor helper introduced to take some actions with requests and responses: 
-* interceptor.abortRequests() allows to abort all requests or requests by url glob pattern, regex pattern (More inforamtion  in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
-* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url glob pattern, regex pattern  when specific action is being performed (More inforamtion about url matching in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
+* interceptor.abortRequests() allows to abort all requests or requests by url glob pattern, regex pattern (More information in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
+* interceptor.abortRequestsDuringAction() allows to abort all requests or requests by url glob pattern, regex pattern when specific action is being performed (More information about url matching in [Playwright documentation](https://playwright.dev/docs/api/class-page?_highlight=page.route#pagerouteurl-handler))
 * interceptor.getAllRequestsData() allows to get all requests information when specific action is being performed.
 * interceptor.waitForRequestAfterAction() waits for specific or any first request and returns all its data.
 * interceptor.waitForResponseAfterAction() waits for specific or any first response and returns all its data.
@@ -75,13 +75,11 @@ Helpers.pageSetup(page);
 ```
 
 ### Parallel execution ###
-* By default Jest runs tests in parallel with a worker pool of child processes
+* By default Jest runs tests in parallel with a worker pool of child processes.
 * The console commands responsible for parallelization settings ([Official Jest documentation](https://jestjs.io/docs/en/cli.html)):
-
-> __-maxConcurrency=<num> (Default: 5)__
+  > * __--maxConcurrency=<num> (Default: 5)__
 Prevents Jest from executing more than the specified amount of tests at the same time. Only affects tests that use test.concurrent.
-
-> __-maxWorkers=<num>|<string>__
+  > * __--maxWorkers=<num>|<string>__
 Specifies the maximum number of workers the worker-pool will spawn for running tests. In single run mode, this defaults to the number of the cores available on your machine minus one for the main thread.
 In watch mode, this defaults to half of the available cores on your machine to ensure Jest is unobtrusive and does not grind your machine to a halt.
 It may be useful to adjust this in resource limited environments like CIs but the defaults should be adequate for most use-cases.
@@ -146,7 +144,7 @@ Then:
 * Type and run ```npm run test``` to run all projects in one batch (all tests in parallel)
 
 __Note 1__: 
-Parallel and sequantial run can be implemented without projects. Add test files matchers in jest scripts.
+Parallel and sequential run can be implemented without projects. Add test files matchers in jest scripts.
 Example:
 ```javascript
 ...
