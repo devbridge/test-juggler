@@ -1,6 +1,10 @@
+import { AxiosInstance } from "axios";
+
 const axios = require("axios").default;
 
 export default class ApiHelpers {
+    instance: AxiosInstance;
+
     constructor(instanceConfig) {
         const https = require("https");
         instanceConfig.httpsAgent = new https.Agent({ rejectUnauthorized: false });

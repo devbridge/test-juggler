@@ -1,9 +1,12 @@
+import { Page } from "playwright";
+
 const fs = require("fs");
 const retry = require("async-retry");
 const defaultCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+declare var page: Page;
 
 class Helpers {
-    async takeScreenshot(filename) {
+    async takeScreenshot(filename?) {
         var targetDir = `./logs/${jasmine["currentSuite"].fullName}`;
         if (typeof jasmine["currentTest"] !== "undefined") {
             targetDir = targetDir + `/${jasmine["currentTest"].description}`;

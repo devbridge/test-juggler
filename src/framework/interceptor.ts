@@ -1,4 +1,7 @@
+import { Page } from "playwright";
+
 const fs = require("fs");
+declare var page: Page;
 
 class Interceptor {
     async takeScreenshot(filename) {

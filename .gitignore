@@ -111,3 +111,4 @@ junit-report
 
 # Visual Regression snapshots
 example/tests/__image_snapshots__/
+built/

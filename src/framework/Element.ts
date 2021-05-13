@@ -1,11 +1,15 @@
+import { Page } from "playwright";
 import Helpers from "./helpers";
 
 const path = require("path");
 const config = require(process.cwd() + "/test-juggler.config");
 const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
+declare var page: Page;
 
 export default class Element {
+    selector: string;
+    
     constructor(selector) {
         this.selector = selector;
     }
@@ -132,14 +136,14 @@ export default class Element {
 
     async text() {
         console.log(`Getting inner text of ${this.selector} ...`);
-        const elementHandle = await this.wait();
+        const elementHandle = await this.wait() as any;
         const text = await elementHandle.evaluate(element => element.innerText);
         return text;
     }
 
     async value() {
         console.log(`Getting value of ${this.selector} ...`);
-        const elementHandle = await this.wait();
+        const elementHandle = await this.wait() as any;
         const value = await elementHandle.evaluate(element => element.value);
         return value;
     }
@@ -191,9 +195,9 @@ export default class Element {
             canvas.height = window.innerHeight;
             //Position canvas
             canvas.style.position = "absolute";
-            canvas.style.left = 0;
-            canvas.style.top = 0;
-            canvas.style.zIndex = 100000;
+            canvas.style.left = "0";
+            canvas.style.top = "0";
+            canvas.style.zIndex = "100000";
             //Make sure you can click 'through' the canvas
             canvas.style.pointerEvents = "none";
             //Append canvas to body element
