@@ -1,4 +1,4 @@
-![Juggler](https://user-images.githubusercontent.com/11597256/83160670-26292200-a110-11ea-93a0-7c05ef293fdf.png)
+![Juggler](https://user-images.githubusercontent.com/11597256/118514027-df777200-b73c-11eb-8394-e5c4b1f64390.png)
 
 # README #
 
