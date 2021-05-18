@@ -296,7 +296,7 @@ describe("Element Actions", () => {
         //Arrange
         const expectedXCoordinate = 640; //width: default viewport 1280px / 2
         const expectedYCoordinate = 25; //height: top bar 50px / 2
-        const rectangleCanvas = new Element(".top-bar__network._fixed");
+        const rectangleCanvas = new Element(".top-bar__network");
         await page.goto("https://stackoverflow.com/users/login");
 
         //Act
