@@ -1,5 +1,4 @@
 import { Element, Helpers } from "test-juggler";
-import helpers from "../../framework/helpers";
 const fs = require("fs");
 
 describe("Helpers", () => {

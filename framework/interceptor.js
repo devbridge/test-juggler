@@ -1,7 +1,6 @@
 const fs = require("fs");
 
 export default class Interceptor {
-    
     constructor(interceptorPage = page) {
         this.page = interceptorPage
     }
