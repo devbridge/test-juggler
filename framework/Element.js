@@ -6,8 +6,9 @@ const defaultTimeout = config.defaultTimeout;
 const shortTimeout = config.shortTimeout;
 
 export default class Element {
-    constructor(selector) {
-        this.selector = selector;
+    constructor(selector, elementPage = page) {
+        this.selector = selector,
+        this.page = elementPage
     }
 
     newChildElement(childSelector) {
@@ -20,7 +21,7 @@ export default class Element {
 
     async wait(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} ...`);
-        const elementHandle = await page.waitForSelector(this.selector, { timeout: timeout });
+        const elementHandle = await this.page.waitForSelector(this.selector, { timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -29,7 +30,7 @@ export default class Element {
 
     async waitUntilVisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be visible...`);
-        const elementHandle = await page.waitForSelector(this.selector, { state: "visible", timeout: timeout });
+        const elementHandle = await this.page.waitForSelector(this.selector, { state: "visible", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -38,7 +39,7 @@ export default class Element {
 
     async waitUntilInvisible(timeout = defaultTimeout) {
         console.log(`Waiting for ${this.selector} to be invisible...`);
-        await page.waitForSelector(this.selector, { state: "hidden", timeout: timeout });
+        await this.page.waitForSelector(this.selector, { state: "hidden", timeout: timeout });
         if (config.captureScreenshots) {
             await Helpers.takeScreenshot();
         }
@@ -58,36 +59,36 @@ export default class Element {
         console.log(`Clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
             const coordinates = await this.getCoordinates(xOffset, yOffset);
-            await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+            await this.page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
-        else await page.click(this.selector);
+        else await this.page.click(this.selector);
     }
 
     async doubleClick(xOffset = null, yOffset = null) {
         console.log(`Double clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
             const coordinates = await this.getCoordinates(xOffset, yOffset);
-            await page.dblclick(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+            await this.page.dblclick(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
-        else await page.dblclick(this.selector);
+        else await this.page.dblclick(this.selector);
     }
 
     async rightClick(xOffset = null, yOffset = null) {
         console.log(`Right clicking ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
             const coordinates = await this.getCoordinates(xOffset, yOffset);
-            await page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y }, button: "right" } );
+            await this.page.click(this.selector, { position: { x: coordinates.x, y: coordinates.y }, button: "right" } );
         }
-        else await page.click(this.selector, { button: "right" });
+        else await this.page.click(this.selector, { button: "right" });
     }
 
     async hover(xOffset = null, yOffset = null) {
         console.log(`Hovering mouse on to ${this.selector} ...`);
         if (xOffset != null || yOffset != null) {
             const coordinates = await this.getCoordinates(xOffset, yOffset);
-            await page.hover(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
+            await this.page.hover(this.selector, { position: { x: coordinates.x, y: coordinates.y } });
         }
-        else await page.hover(this.selector);
+        else await this.page.hover(this.selector);
     }
 
     async exists() {
@@ -119,15 +120,15 @@ export default class Element {
     }
 
     async dragAndDrop(destination) {
-        const sourceElement = await page.waitForSelector(this.selector);
-        const destinationElement = await page.waitForSelector(destination.selector);
+        const sourceElement = await this.page.waitForSelector(this.selector);
+        const destinationElement = await this.page.waitForSelector(destination.selector);
         const sourceBox = await sourceElement.boundingBox();
         const destinationBox = await destinationElement.boundingBox();
         console.log(`Drag and dropping ${this.selector} to ${destination.selector} ...`);
-        await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
-        await page.mouse.down();
-        await page.mouse.move(destinationBox.x + destinationBox.width / 2, destinationBox.y + destinationBox.height / 2);
-        await page.mouse.up();
+        await this.page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
+        await this.page.mouse.down();
+        await this.page.mouse.move(destinationBox.x + destinationBox.width / 2, destinationBox.y + destinationBox.height / 2);
+        await this.page.mouse.up();
     }
 
     async text() {
@@ -153,10 +154,10 @@ export default class Element {
     async clearText() {
         console.log(`Clearing the text value for ${this.selector} ...`);
         await this.click();
-        await page.keyboard.down("Control");
-        await page.keyboard.press("A");
-        await page.keyboard.up("Control");
-        await page.keyboard.press("Backspace");
+        await this.page.keyboard.down("Control");
+        await this.page.keyboard.press("A");
+        await this.page.keyboard.up("Control");
+        await this.page.keyboard.press("Backspace");
     }
 
     async takeScreenshot() {
@@ -216,7 +217,7 @@ export default class Element {
     async downloadFile(filePath) {
         if (!path.isAbsolute(filePath)) filePath = process.cwd().replace(/\\/g, "/") + filePath;
         const [download] = await Promise.all([
-            page.waitForEvent("download"),
+            this.page.waitForEvent("download"),
             this.click(),
         ]);
         await download.saveAs(filePath);
