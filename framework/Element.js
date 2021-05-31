@@ -11,12 +11,12 @@ export default class Element {
         this.page = elementPage
     }
 
-    newChildElement(childSelector) {
+    newChildElement(childSelector, childElementPage = page) {
         var isXPathSlector = (selector) => selector.startsWith("//");
         if (isXPathSlector(this.selector) != isXPathSlector(childSelector)) {
             throw "Cannot combine different selectors types!";
         }
-        return new Element(`${this.selector} ${childSelector}`);
+        return new Element(`${this.selector} ${childSelector}`, childElementPage);
     }
 
     async wait(timeout = defaultTimeout) {
