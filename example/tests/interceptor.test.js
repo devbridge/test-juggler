@@ -2,10 +2,12 @@ import { Element, Interceptor } from "test-juggler";
 
 const DemoQaSite = "https://demoqa.com/books";
 const DemoOpenCartSite = "https://demo.opencart.com/";
-const successMessage = new Element(".alert-success");
-const addToCartButton = new Element(".product-layout:nth-child(1) > div button:nth-child(1)");
-const loadingWrapper = new Element("#loading-wrapper");
-const booksWrapper = new Element(".books-wrapper");
+let page;
+let successMessage;
+let addToCartButton;
+let loadingWrapper;
+let booksWrapper;
+let interceptor;
 
 describe("Interceptor", () => {
     beforeEach(async () => {
@@ -13,12 +15,17 @@ describe("Interceptor", () => {
         //this is workaraound to avoid 'Request is already handled!' error. Shoud be removed when https://github.com/smooth-code/jest-puppeteer/issues/308 defect is fixed.
         const context = await browser.newContext();
         page = await context.newPage();
+        successMessage = new Element(".alert-success", page);
+        addToCartButton = new Element(".product-layout:nth-child(1) > div button:nth-child(1)", page);
+        loadingWrapper = new Element("#loading-wrapper", page);
+        booksWrapper = new Element(".books-wrapper", page);
+        interceptor = new Interceptor(page);
     });
 
     it("should block requests by any url fragment using Regex pattern while test case running", async () => {
         //Arrange
         const requestUrlRegex = /BookStore/;
-        await Interceptor.abortRequests(requestUrlRegex);
+        await interceptor.abortRequests(requestUrlRegex);
 
         //Act
         await page.goto(DemoQaSite);
@@ -41,13 +48,13 @@ describe("Interceptor", () => {
 
         //Act
         await page.goto(DemoQaSite);
-        await loadingWrapper.waitUntilInvisible();
+        await booksWrapper.waitUntilVisible();
 
         //Assert
         await expect(booksWrapper.exists()).resolves.toBeTruthy();
 
         //Act
-        await Interceptor.abortRequests(requestUrlGlob);
+        await interceptor.abortRequests(requestUrlGlob);
         await page.reload();
         await loadingWrapper.waitUntilVisible();
 
@@ -59,7 +66,7 @@ describe("Interceptor", () => {
         //Arrange
 
         const requestUrlGlob = "**/BookStore/**";
-        await Interceptor.abortRequestsAfterAction(page.goto(DemoQaSite), requestUrlGlob);
+        await interceptor.abortRequestsAfterAction(page.goto(DemoQaSite), requestUrlGlob);
 
         //Assert
         await loadingWrapper.waitUntilVisible();
@@ -69,7 +76,7 @@ describe("Interceptor", () => {
 
         //Act
         await page.reload();
-        await loadingWrapper.waitUntilInvisible();
+        await booksWrapper.waitUntilVisible();
 
         //Assert
         await expect(booksWrapper.exists()).resolves.toBeTruthy();
@@ -86,7 +93,7 @@ describe("Interceptor", () => {
         });
 
         //Act
-        await Interceptor.abortRequestsAfterAction(addToCartButton.click());
+        await interceptor.abortRequestsAfterAction(addToCartButton.click());
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeFalsy();
@@ -95,7 +102,7 @@ describe("Interceptor", () => {
 
     it("should count all requests", async () => {
         //Act
-        var totalRequests = await Interceptor.getAllRequestsData(page.goto(DemoOpenCartSite));
+        var totalRequests = await interceptor.getAllRequestsData(page.goto(DemoOpenCartSite));
 
         //Assert
         expect(totalRequests.length > 0).toBeTruthy();
@@ -108,7 +115,7 @@ describe("Interceptor", () => {
         await page.goto(DemoOpenCartSite);
 
         //Act
-        var responseAfterAction = await Interceptor.waitForResponseAfterAction(addToCartButton.click(), responseUrlFragment);
+        var responseAfterAction = await interceptor.waitForResponseAfterAction(addToCartButton.click(), responseUrlFragment);
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeTruthy();
@@ -122,7 +129,7 @@ describe("Interceptor", () => {
         await page.goto(DemoOpenCartSite);
 
         //Act
-        var requestAfterAction = await Interceptor.waitForRequestAfterAction(addToCartButton.click());
+        var requestAfterAction = await interceptor.waitForRequestAfterAction(addToCartButton.click());
 
         //Assert
         await expect(successMessage.isVisible()).resolves.toBeTruthy();

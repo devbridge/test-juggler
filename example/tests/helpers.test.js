@@ -95,4 +95,34 @@ describe("Helpers", () => {
         expect(regex.test(text)).toBeTruthy();
         expect(text.length).toEqual(8);
     });
+
+    it("should accept opened alerts", async () => {
+        //Arrange
+        const pageWithAcceptAlertsSetup = await browser.newPage();
+        await Helpers.acceptPopupsOnPage(pageWithAcceptAlertsSetup);
+        const resultElement = new Element("#result", pageWithAcceptAlertsSetup);
+
+        //Act 
+        await pageWithAcceptAlertsSetup.goto("http://the-internet.herokuapp.com/javascript_alerts");
+	    await pageWithAcceptAlertsSetup.click("button[onclick='jsAlert()']");
+        const resultElementText = await resultElement.text();
+
+        //Assert
+        expect(resultElementText).toMatch("You successfully clicked an alert");
+    });
+
+    it("should close opened alerts", async () => {
+        //Arrange
+        const pageWithDismissAlertsSetup = await browser.newPage();
+        await Helpers.dismissPopupsOnPage(pageWithDismissAlertsSetup);
+        const resultElement = new Element("#result", pageWithDismissAlertsSetup);
+
+        //Act 
+        await pageWithDismissAlertsSetup.goto("http://the-internet.herokuapp.com/javascript_alerts");
+	    await pageWithDismissAlertsSetup.click("button[onclick='jsAlert()']");
+        const resultElementText = await resultElement.text();
+
+        //Assert
+        expect(resultElementText).toMatch("You successfully clicked an alert");
+    });
 });
