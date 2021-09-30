@@ -46,6 +46,20 @@ class Helpers {
         console.log(`Generated a random text: ${result}`);
         return result;
     }
+
+    async acceptPopupsOnPage(page) {
+        await page.on("dialog", dialog => {
+            console.log(`Alert was detected: '${dialog.message()}'`);
+            dialog.accept();
+        });
+    }
+    
+    async dismissPopupsOnPage(page) {
+        await page.on("dialog", dialog => {
+            console.log(`Alert was detected: '${dialog.message()}'`);
+            dialog.dismiss();
+        });
+    }
 }
 
 export default new Helpers();
